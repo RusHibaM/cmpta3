@@ -100,7 +100,7 @@ void ShooterAction(int rate,Color PlayerColor)
                             
                             
                             print_flag = 1;
-                            
+                            while(print_flag);
                             cout<<"Player"<<PlayerColor<<" prints"<<endl;
                             round--;
                             if(round == 0){
@@ -185,7 +185,6 @@ void Printer(int rate)
             continue;
         }else{
             if(print_flag == 1){
-                sleep(1);
                 Gallery->Print();
                 print_flag = 0;
             }
