@@ -102,7 +102,6 @@ void ShooterAction(int rate,Color PlayerColor)
                             print_flag = 1;
                             
                             cout<<"Player"<<PlayerColor<<" prints"<<endl;
-                            Gallery->Print();
                             round--;
                             if(round == 0){
                                 exit(0);
@@ -176,13 +175,19 @@ void Printer(int rate)
      *  Not a particular concern if we don't shoot two lanes at the same time.
      *
      */
-
-   while(print_flag)
-   {
-       Gallery->Print();
-       cout<<Gallery->Count()<<endl;
-       print_flag = 0;
-   }
+    struct timeval finish;
+    int time_passed;
+    while(print_flag == 1){
+        gettimeofday(&finish, 0);
+        time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
+        if(time_passed % (1000000/rate) != 0){
+            print_flag = 0;
+            continue;
+        }else{
+            print_flag = 0;
+            Gallery->Print();
+        }
+    }
 
 }
 
@@ -233,7 +238,7 @@ int main(int argc, char** argv)
     ths.push_back(std::thread(&ShooterAction,5,red));
     ths.push_back(std::thread(&ShooterAction,5,blue));
     ths.push_back(std::thread(&Cleaner));
-    ths.push_back(std::thread(&Printer,5));
+    ths.push_back(std::thread(&Printer,1));
 
     // Join with threads
     //    RedShooterT.join();
