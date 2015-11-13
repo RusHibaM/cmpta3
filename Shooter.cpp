@@ -55,7 +55,7 @@ void ShooterAction(int rate,Color PlayerColor)
             //cout<<"1Player"<<PlayerColor<<endl;
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
-                cout<<"Player"<<PlayerColor<<"gets the lock"<<endl;
+                cout<<"Player"<<PlayerColor<<" gets the lock"<<endl;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
@@ -100,6 +100,8 @@ void ShooterAction(int rate,Color PlayerColor)
                             
                             
                             print_flag = 1;
+                            cout<<"Player"<<PlayerColor<<" prints"<<endl;
+                            Gallery->Print();
                             sleep(1);
                             Gallery->Clear();
                             coarseLock.release_lock();
