@@ -52,15 +52,15 @@ void ShooterAction(int rate,Color PlayerColor)
         while(cleaner_flag);/* Another thread is working as a cleaner */
         /* Try acquire the lock */
         if(!coarseLock.check_lock()&&!cleaner_flag){
-            cout<<"1Player"<<PlayerColor<<endl;
+            //cout<<"1Player"<<PlayerColor<<endl;
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
-                cout<<"2Player"<<PlayerColor<<endl;
+                //cout<<"2Player"<<PlayerColor<<endl;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
-                cout<<"The lane_number: "<<lane_number<<endl;
-                cout<<"Get random lane number: "<<r_lane<<endl;
+                //cout<<"The lane_number: "<<lane_number<<endl;
+                //cout<<"Get random lane number: "<<r_lane<<endl;
                 
                 
                 /* Check if the lane is white */
@@ -70,7 +70,7 @@ void ShooterAction(int rate,Color PlayerColor)
                 if(this_color == white&&!cleaner_flag){
                     
                     
-                    cout<<"Ready to shoot to lane: "<<r_lane<<endl;
+                    //cout<<"Ready to shoot to lane: "<<r_lane<<endl;
                     
                     
                     Gallery->Set(r_lane,PlayerColor);
