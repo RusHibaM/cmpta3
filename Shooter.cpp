@@ -55,12 +55,12 @@ void ShooterAction(int rate,Color PlayerColor)
             //cout<<"1Player"<<PlayerColor<<endl;
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
-                //cout<<"2Player"<<PlayerColor<<endl;
+                cout<<"Player"<<PlayerColor<<"gets the lock"<<endl;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
-                //cout<<"The lane_number: "<<lane_number<<endl;
-                //cout<<"Get random lane number: "<<r_lane<<endl;
+                cout<<"The lane_number: "<<lane_number<<endl;
+                cout<<"Get random lane number: "<<r_lane<<endl;
                 
                 
                 /* Check if the lane is white */
@@ -70,7 +70,7 @@ void ShooterAction(int rate,Color PlayerColor)
                 if(this_color == white&&!cleaner_flag){
                     
                     
-                    //cout<<"Ready to shoot to lane: "<<r_lane<<endl;
+                    cout<<"Ready to shoot to lane: "<<r_lane<<endl;
                     
                     
                     Gallery->Set(r_lane,PlayerColor);
@@ -100,8 +100,6 @@ void ShooterAction(int rate,Color PlayerColor)
                             
                             
                             print_flag = 1;
-                            Gallery->Print();
-                            cout<<Gallery->Count()<<endl;
                             sleep(1);
                             Gallery->Clear();
                             coarseLock.release_lock();
@@ -226,8 +224,8 @@ int main(int argc, char** argv)
     gettimeofday (&start, NULL);
     ths.push_back(std::thread(&ShooterAction,5,red));
     ths.push_back(std::thread(&ShooterAction,5,blue));
-    //ths.push_back(std::thread(&Cleaner));
-    //ths.push_back(std::thread(&Printer,5));
+    ths.push_back(std::thread(&Cleaner));
+    ths.push_back(std::thread(&Printer,5));
 
     // Join with threads
     //    RedShooterT.join();
