@@ -184,6 +184,7 @@ void Printer(int rate)
             print_flag = 0;
             continue;
         }else{
+            cout<<"Printer in working"<<endl;
             if(print_flag == 1){
                 cout<<"Printer in working"<<endl;
                 Gallery->Print();
