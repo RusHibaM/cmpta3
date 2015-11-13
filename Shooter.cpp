@@ -55,12 +55,12 @@ void ShooterAction(int rate,Color PlayerColor)
             //cout<<"1Player"<<PlayerColor<<endl;
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
-                //cout<<"Player"<<PlayerColor<<" gets the lock"<<endl;
+                cout<<"Player"<<PlayerColor<<" gets the lock"<<endl;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
-                //cout<<"The lane_number: "<<lane_number<<endl;
-                //cout<<"Get random lane number: "<<r_lane<<endl;
+                cout<<"The lane_number: "<<lane_number<<endl;
+                cout<<"Get random lane number: "<<r_lane<<endl;
                 
                 
                 /* Check if the lane is white */
@@ -70,7 +70,7 @@ void ShooterAction(int rate,Color PlayerColor)
                 if(this_color == white&&!cleaner_flag){
                     
                     
-                    //cout<<"Ready to shoot to lane: "<<r_lane<<endl;
+                    cout<<"Ready to shoot to lane: "<<r_lane<<endl;
                     
                     
                     Gallery->Set(r_lane,PlayerColor);
@@ -81,7 +81,7 @@ void ShooterAction(int rate,Color PlayerColor)
                     if(r_lane_flag >= lane_number/2){
                         
                         
-                        //cout<<"Try clean with flag: "<<r_lane_flag<<endl;
+                        cout<<"Try clean with flag: "<<r_lane_flag<<endl;
                         
                         
                         r_lane_flag = 0;
@@ -96,12 +96,12 @@ void ShooterAction(int rate,Color PlayerColor)
                         if(j == lane_number){
                             
                             
-                            //cout<<"Clean and print, j: "<<j<<endl;
+                            cout<<"Clean and print, j: "<<j<<endl;
                             
                             
                             print_flag = 1;
                             while(print_flag);
-                            //cout<<"Player"<<PlayerColor<<" prints"<<endl;
+                            cout<<"Player"<<PlayerColor<<" prints"<<endl;
                             round--;
                             if(round == 0){
                                 exit(0);
@@ -178,18 +178,10 @@ void Printer(int rate)
     struct timeval finish;
     int time_passed;
     while(1){
-        gettimeofday(&finish, 0);
-        time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
-        if(time_passed % (1000000/rate) != 0){
+        if(print_flag == 1){
+            cout<<"Printer in working"<<endl;
+            Gallery->Print();
             print_flag = 0;
-            continue;
-        }else{
-            //cout<<"Printer in working"<<endl;
-            if(print_flag == 1||1){
-                //cout<<"Printer in working"<<endl;
-                Gallery->Print();
-                print_flag = 0;
-            }
         }
     }
 }
