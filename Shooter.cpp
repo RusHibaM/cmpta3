@@ -100,11 +100,17 @@ void ShooterAction(int rate,Color PlayerColor)
                             
                             
                             print_flag = 1;
+                            
                             cout<<"Player"<<PlayerColor<<" prints"<<endl;
                             Gallery->Print();
+                            round--;
+                            if(round == 0){
+                                exit(0);
+                            }
                             sleep(1);
                             Gallery->Clear();
                             coarseLock.release_lock();
+                            cleaner_flag = 0;
                         }else{
                             cleaner_flag = 0;
                             coarseLock.release_lock();
