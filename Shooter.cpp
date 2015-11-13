@@ -52,41 +52,25 @@ void ShooterAction(int rate,Color PlayerColor)
         while(cleaner_flag);/* Another thread is working as a cleaner */
         /* Try acquire the lock */
         if(!coarseLock.check_lock()&&!cleaner_flag){
-            //cout<<"1Player"<<PlayerColor<<endl;
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
-                //cout<<"Player"<<PlayerColor<<" gets the lock"<<endl;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
-                //cout<<"The lane_number: "<<lane_number<<endl;
-                //cout<<"Get random lane number: "<<r_lane<<endl;
-                
                 
                 /* Check if the lane is white */
                 Color this_color = Gallery->Get(r_lane);
                 
                 /* Shoot the lane if the lane is white*/
                 if(this_color == white&&!cleaner_flag){
-                    
-                    
-                    //cout<<"Ready to shoot to lane: "<<r_lane<<endl;
-                    
-                    
                     Gallery->Set(r_lane,PlayerColor);
                     successful_shot++;
                     coarseLock.release_lock();
                 }else{
                     r_lane_flag++;
                     if(r_lane_flag >= lane_number/2){
-                        
-                        
-                        //cout<<"Try clean with flag: "<<r_lane_flag<<endl;
-                        
-                        
                         r_lane_flag = 0;
                         cleaner_flag = 1;
-                        
                         int j;
                         for(j = 0; j < lane_number; j++){
                             if(Gallery->Get(j) == white){
@@ -94,14 +78,8 @@ void ShooterAction(int rate,Color PlayerColor)
                             }
                         }
                         if(j == lane_number){
-                            
-                            
-                            //cout<<"Clean and print, j: "<<j<<endl;
-                            
-                            
                             print_flag = 1;
                             while(print_flag);
-                            //cout<<"Player"<<PlayerColor<<" prints"<<endl;
                             round--;
                             if(round == 0){
                                 exit(0);
