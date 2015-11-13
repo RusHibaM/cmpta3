@@ -181,6 +181,7 @@ void Printer(int rate)
         gettimeofday(&finish, 0);
         time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
         if(time_passed % (1000000/rate) != 0){
+            cout<<"Printer in working"<<endl;
             print_flag = 0;
             continue;
         }else{
