@@ -184,8 +184,9 @@ void Printer(int rate)
             print_flag = 0;
             continue;
         }else{
-            print_flag = 0;
+            sleep(1);
             Gallery->Print();
+            print_flag = 0;
         }
     }
 
