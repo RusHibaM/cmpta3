@@ -238,10 +238,10 @@ int main(int argc, char** argv)
     //    std::thread RedShooterT,BlueShooterT,CleanerT,PrinterT;
 
     gettimeofday (&start, NULL);
-    ths.push_back(std::thread(&ShooterAction,5,red));
-    ths.push_back(std::thread(&ShooterAction,5,blue));
+    ths.push_back(std::thread(&ShooterAction,red_rate,red));
+    ths.push_back(std::thread(&ShooterAction,blue_rate,blue));
     ths.push_back(std::thread(&Cleaner));
-    ths.push_back(std::thread(&Printer,1));
+    ths.push_back(std::thread(&Printer,16));
 
     // Join with threads
     //    RedShooterT.join();
