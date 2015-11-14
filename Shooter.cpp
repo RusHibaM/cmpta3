@@ -242,7 +242,7 @@ void ShooterAction(int rate,Color PlayerColor)
                     r_lane_flag++;
                     if(r_lane_flag >= lane_number/2){
                         r_lane_flag = 0;
-                        #ifndef ROGUELINECLEANER
+                        #ifndef ROGUEFINECLEANER
                         cleaner_flag = 1;
                         int j;
                         for(j = 0; j < lane_number; j++){
@@ -266,13 +266,165 @@ void ShooterAction(int rate,Color PlayerColor)
                             fineLocks[r_lane].release_lock();
                         }
                         #endif
-                        #ifdef ROGUELINECLEANER
+                        #ifdef ROGUEFINECLEANER
                         cleaner_flag = 1;
                         while(cleaner_flag);
                         fineLocks[r_lane].release_lock();
                         #endif
                     }
                     fineLocks[r_lane].release_lock();
+                }
+                
+            }else{
+                continue;
+            }
+        }else{
+            continue;
+        }
+        #endif
+        #ifdef CHECKFIRST
+        /* Try acquire the lock */
+        if(!coarseLock.check_lock()&&!cleaner_flag){
+            /* Double check to gaurantee the synchronization */
+            if (coarseLock.set_lock()&&!cleaner_flag) {
+                /* Try get a lane */
+                /* r_lane is the lane */
+                r_lane = rand()%lane_number;
+                
+                /* Check if the lane is white */
+                Color this_color = Gallery->Get(r_lane);
+                
+                /* Shoot the lane if the lane is white*/
+                if(this_color == white&&!cleaner_flag){
+                    Gallery->Set(r_lane,PlayerColor);
+                    successful_shot++;
+                    coarseLock.release_lock();
+                }else{
+                    r_lane_flag++;
+                    if(r_lane_flag >= lane_number/2){
+                        r_lane_flag = 0;
+                        #ifndef ROGUECOARSECLEANER
+                        cleaner_flag = 1;
+                        int j;
+                        for(j = 0; j < lane_number; j++){
+                            if(Gallery->Get(j) == white){
+                                break;
+                            }
+                        }
+                        if(j == lane_number){
+                            print_flag = 1;
+                            while(print_flag);
+                            round--;
+                            if(round == 0){
+                                exit(0);
+                            }
+                            sleep(1);
+                            Gallery->Clear();
+                            coarseLock.release_lock();
+                            cleaner_flag = 0;
+                        }else{
+                            cleaner_flag = 0;
+                            coarseLock.release_lock();
+                        }
+                        #endif
+                        #ifdef ROGUECOARSECLEANER
+                        cleaner_flag = 1;
+                        while(cleaner_flag);
+                        coarseLock.release_lock();
+                        #endif
+                    }
+                    coarseLock.release_lock();
+                }
+                
+            }else{
+                continue;
+            }
+        }else{
+            continue;
+        }
+        #endif
+    }
+#endif
+    
+#ifdef ROGUEFINE2
+    struct timeval finish;
+    int time_passed;
+    int successful_shot = 0; /* The time successfully get a shot */
+    int r_lane;  /* Random lane number 1 */
+    int r_lane_2;/* Random lane number 2 */
+    int r_lane_flag = 0;
+    while(1){
+        gettimeofday(&finish, 0);
+        time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
+        if(time_passed % (1000000/rate) != 0){
+            continue;
+        }else{
+            ;
+        }
+        while(cleaner_flag);/* Another thread is working as a cleaner */
+        #ifdef LOCKFIRST
+        /* Try get a lane */
+        /* r_lane is the lane */
+        r_lane = rand()%lane_number;
+        r_lane_2 = rand()%lane_number;
+        while(r_lane==r_lane_2){
+            r_lane_2 = rand()%lane_number;
+        }
+        /* Try acquire the lock */
+        if(!fineLocks[r_lane].check_lock()&&!fineLocks[r_lane_2].check_lock()&&!cleaner_flag){
+            /* Double check to gaurantee the synchronization */
+            if (fineLocks[r_lane].set_lock()&&fineLocks[r_lane_2].set_lock()&&!cleaner_flag) {
+                
+                /* Check if the lane is white */
+                Color this_color = Gallery->Get(r_lane);
+                Color this_color_2 = Gallery->Get(r_lane_2);
+                
+                /* Shoot the lane if the lane is white*/
+                if(this_color == white && this_color_2 == white && !cleaner_flag){
+                    Gallery->Set(r_lane,PlayerColor);
+                    Gallery->Set(r_lane_2,PlayerColor);
+                    successful_shot = successful_shot + 2;
+                    fineLocks[r_lane].release_lock();
+                    fineLocks[r_lane_2].release_lock();
+                }else{
+                    r_lane_flag++;
+                    if(r_lane_flag >= lane_number/2){
+                        r_lane_flag = 0;
+                        #ifndef ROGUEFINECLEANER
+                        cleaner_flag = 1;
+                        int j;
+                        for(j = 0; j < lane_number; j++){
+                            if(Gallery->Get(j) == white){
+                                break;
+                            }
+                        }
+                        if(j == lane_number){
+                            print_flag = 1;
+                            while(print_flag);
+                            round--;
+                            if(round == 0){
+                                exit(0);
+                            }
+                            sleep(1);
+                            Gallery->Clear();
+                            fineLocks[r_lane].release_lock();
+                            fineLocks[r_lane_2].release_lock();
+                            cleaner_flag = 0;
+                        }else{
+                            fineLocks[r_lane].release_lock();
+                            fineLocks[r_lane_2].release_lock();
+                            cleaner_flag = 0;
+                        }
+                        #endif
+                        #ifdef ROGUEFINECLEANER
+                        cleaner_flag = 1;
+                        while(cleaner_flag);
+                        fineLocks[r_lane].release_lock();
+                        fineLocks[r_lane_2].release_lock();
+                        #endif
+                    }
+                    fineLocks[r_lane].release_lock();
+                    fineLocks[r_lane_2].release_lock();
                 }
                 
             }else{
@@ -522,7 +674,7 @@ void Cleaner()
                     exit(0);
                 }
                 sleep(1);
-                cout<<"Cleaner in working"<<endl;
+                cout<<"Rogue Coarse Cleaner in working"<<endl;
                 cout<<endl;
                 Gallery->Clear();
             }
@@ -548,7 +700,7 @@ void Cleaner()
                     exit(0);
                 }
                 sleep(1);
-                cout<<"Cleaner in working"<<endl;
+                cout<<"Rogue Fine Cleaner in working"<<endl;
                 cout<<endl;
                 Gallery->Clear();
             }
@@ -589,19 +741,23 @@ int main(int argc, char** argv)
 {
 #ifdef ROGUECOARSE
     coarseLock.lock_init();
+    cout<<"ROGUECOARSE is chosen."<<endl;
 #endif
 #ifdef ROGUECOARSE2
     coarseLock.lock_init();
+    cout<<"ROGUECOARSE2 is chosen."<<endl;
 #endif
 #ifdef ROGUEFINE
     for(int i = 0; i < lane_number; i++){
         fineLocks[i].lock_init();
     }
+    cout<<"ROGUEFINE is chosen."<<endl;
 #endif
 #ifdef ROGUEFINE2
     for(int i = 0; i < lane_number; i++){
         fineLocks[i].lock_init();
     }
+    cout<<"ROGUEFINE2 is chosen."<<endl;
 #endif
     
     std::vector<thread> ths;
