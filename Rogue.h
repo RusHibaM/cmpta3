@@ -64,6 +64,43 @@ public:
     int Success; // Rate/s of lanes shot by ROGUE
 };
 
+class My_fine_Locks
+{
+public:
+    void lock_init(){if_lock = 0;};
+    int check_lock();
+    int set_lock();
+    int release_lock();
+    
+private:
+    int if_lock;      /* If the lanes are locked */
+};
+
+int My_fine_Locks::check_lock()
+{
+    return if_lock;   /* If locked return 1, if not return 0 */
+}
+
+int My_fine_Locks::set_lock()
+{
+    if (if_lock == 1) {  /* The lanes are already locked, lock failed */
+        return 0;
+    }else{
+        if_lock = 1;     /* The lanes are not locked, lock the lanes */
+        return 1;
+    }
+}
+
+int My_fine_Locks::release_lock()
+{
+    if (if_lock == 0) {  /* The lanes are not locked, release failed */
+        return 0;
+    }else{
+        if_lock = 0;     /* Release lock successfully */
+        return 1;
+    }
+}
+
 #endif
 
 #endif
