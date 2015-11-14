@@ -64,6 +64,25 @@ public:
     int Success; // Rate/s of lanes shot by ROGUE
 };
 
+#endif
+
+#endif
+
+
+#ifdef ROGUEFINE
+
+class Rogue
+{
+public:
+    Rogue(int color, int rate);
+    ~Rogue();
+    
+    /* data */
+    Color Bullet; // The bullet color to paint the lane
+    int ShotRate; // Rate/s required to shoot the lanes
+    int Success; // Rate/s of lanes shot by ROGUE
+};
+
 class My_fine_Locks
 {
 public:
@@ -100,25 +119,6 @@ int My_fine_Locks::release_lock()
         return 1;
     }
 }
-
-#endif
-
-#endif
-
-
-#ifdef ROGUEFINE
-
-class Rogue
-{
-public:
-    Rogue(int color, int rate);
-    ~Rogue();
-    
-    /* data */
-    Color Bullet; // The bullet color to paint the lane
-    int ShotRate; // Rate/s required to shoot the lanes
-    int Success; // Rate/s of lanes shot by ROGUE
-};
 
 #endif
 
