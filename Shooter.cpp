@@ -29,6 +29,16 @@ int coarse_lock = 0;
 
 #endif
 
+#ifdef ROGUECOARSE2
+
+My_Lock coarseLock;
+
+int cleaner_flag = 0;/* flag used to control the cleaner */
+
+int coarse_lock = 0;
+
+#endif
+
 using namespace std;
 
 void ShooterAction(int rate,Color PlayerColor)
