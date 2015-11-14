@@ -31,6 +31,7 @@ void ShooterAction(int rate,Color PlayerColor) {
     int successful_shot = 0; /* The time successfully get a shot */
     int r_lane; /* Random lane number 1*/
     int r_lane_flag = 0;
+    int cleaner_flag = 0;
     
     while(1){
         gettimeofday(&finish, 0);
