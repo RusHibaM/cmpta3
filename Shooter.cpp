@@ -366,6 +366,7 @@ void Cleaner()
                     exit(0);
                 }
                 sleep(1);
+                cout<<"Cleaner in working"<<endl;
                 Gallery->Clear();
             }
             cleaner_flag = 0;
