@@ -45,15 +45,18 @@ void ShooterAction(int rate,Color PlayerColor) {
             /* Try get a lane */
             /* r_lane is the lane */
             r_lane = rand()%lane_number;
+            cout<<"Player"<<PlayerColor<<" get into the transaction"<<endl;
             
             /* Check if the lane is white */
             Color this_color = Gallery->Get(r_lane);
             /* Shoot the lane if the lane is white*/
             if(this_color == white&&!cleaner_flag){
+                cout<<"Player"<<PlayerColor<<" ready to shoot to "<<r_lane<<endl;
                 Gallery->Set(r_lane,PlayerColor);
                 successful_shot++;
                 _xend ();
             }else{
+                cout<<"Player"<<PlayerColor<<" fail to shoot to "<<r_lane<<endl;
                 r_lane_flag++;
                 if(r_lane_flag >= lane_number/2){
                     r_lane_flag = 0;
@@ -84,13 +87,13 @@ void ShooterAction(int rate,Color PlayerColor) {
                     #ifdef ROGUETMCLEANER
                     cleaner_flag = 1;
                     while(cleaner_flag);
-                    coarseLock.release_lock();
                     #endif
                 }
             }
         }else{
             nretries++;
         }
+        cout<<"This the "<<nretries<<"th try."<<endl
     }
 }
 
