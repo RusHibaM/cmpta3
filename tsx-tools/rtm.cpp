@@ -22,7 +22,7 @@ int print_flag = 0;  /* flag used to control the printer */
 
 struct timeval start;
 
-void ShooterAction(int rate,Color PlayerColor) {
+void ShooterAction(int rate,Color PlayerColor){
     int nretries=0;
     int status;
     
@@ -93,7 +93,7 @@ void ShooterAction(int rate,Color PlayerColor) {
         }else{
             nretries++;
         }
-        cout<<"This the "<<nretries<<"th try."<<endl
+        cout<<"This the "<<nretries<<"th try."<<endl;
     }
 }
 
