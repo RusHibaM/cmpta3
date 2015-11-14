@@ -90,6 +90,7 @@ void ShooterAction(int rate,Color PlayerColor){
                     #endif
                 }
             }
+            _xend ();
         }else{
             nretries++;
         }
