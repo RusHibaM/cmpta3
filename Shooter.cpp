@@ -79,6 +79,7 @@ void ShooterAction(int rate,Color PlayerColor)
                     r_lane_flag++;
                     if(r_lane_flag >= lane_number/2){
                         r_lane_flag = 0;
+                        #ifndef ROGUECOARSECLEANER
                         cleaner_flag = 1;
                         int j;
                         for(j = 0; j < lane_number; j++){
@@ -101,6 +102,12 @@ void ShooterAction(int rate,Color PlayerColor)
                             cleaner_flag = 0;
                             coarseLock.release_lock();
                         }
+                        #endif
+                        #ifdef ROGUECOARSECLEANER
+                        cleaner_flag = 1;
+                        while(cleaner_flag);
+                        coarseLock.release_lock();
+                        #endif
                     }
                     coarseLock.release_lock();
                 }
@@ -133,6 +140,7 @@ void ShooterAction(int rate,Color PlayerColor)
                     r_lane_flag++;
                     if(r_lane_flag >= lane_number/2){
                         r_lane_flag = 0;
+                        #ifndef ROGUECOARSECLEANER
                         cleaner_flag = 1;
                         int j;
                         for(j = 0; j < lane_number; j++){
@@ -155,6 +163,12 @@ void ShooterAction(int rate,Color PlayerColor)
                             cleaner_flag = 0;
                             coarseLock.release_lock();
                         }
+                        #endif
+                        #ifdef ROGUECOARSECLEANER
+                        cleaner_flag = 1;
+                        while(cleaner_flag);
+                        coarseLock.release_lock();
+                        #endif
                     }
                     coarseLock.release_lock();
                 }
@@ -212,6 +226,7 @@ void ShooterAction(int rate,Color PlayerColor)
                     r_lane_flag++;
                     if(r_lane_flag >= lane_number/2){
                         r_lane_flag = 0;
+                        #ifndef ROGUECOARSECLEANER
                         cleaner_flag = 1;
                         int j;
                         for(j = 0; j < lane_number; j++){
@@ -234,6 +249,12 @@ void ShooterAction(int rate,Color PlayerColor)
                             cleaner_flag = 0;
                             coarseLock.release_lock();
                         }
+                        #endif
+                        #ifdef ROGUECOARSECLEANER
+                        cleaner_flag = 1;
+                        while(cleaner_flag);
+                        coarseLock.release_lock();
+                        #endif
                     }
                     coarseLock.release_lock();
                 }
@@ -266,6 +287,7 @@ void ShooterAction(int rate,Color PlayerColor)
                     r_lane_flag++;
                     if(r_lane_flag >= lane_number/2){
                         r_lane_flag = 0;
+                        #ifndef ROGUECOARSECLEANER
                         cleaner_flag = 1;
                         int j;
                         for(j = 0; j < lane_number; j++){
@@ -288,6 +310,12 @@ void ShooterAction(int rate,Color PlayerColor)
                             cleaner_flag = 0;
                             coarseLock.release_lock();
                         }
+                        #endif
+                        #ifdef ROGUECOARSECLEANER
+                        cleaner_flag = 1;
+                        while(cleaner_flag);
+                        coarseLock.release_lock();
+                        #endif
                     }
                     coarseLock.release_lock();
                 }
@@ -322,13 +350,26 @@ void Cleaner()
      *  Once cleaner starts up shooters wait for cleaner to finish.
      */
 #ifdef ROGUECOARSECLEANER
-    while(cleaner_flag){
-        for(int i = 0; i < lane_number; i++){
-            if(Gallery->Get(i) == white){
-                break;
+    while(1){
+        if(cleaner_flag == 1){
+            int i;
+            for(i = 0; i < lane_number; i++){
+                if(Gallery->Get(i) == white){
+                    break;
+                }
             }
+            if(i >= lane_number){
+                print_flag = 1;
+                while(print_flag);
+                round--;
+                if(round == 0){
+                    exit(0);
+                }
+                sleep(1);
+                Gallery->Clear();
+            }
+            cleaner_flag = 0;
         }
-        cleaner_flag = 0;
     }
 #endif
     
