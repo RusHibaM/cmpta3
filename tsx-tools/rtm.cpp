@@ -67,6 +67,7 @@ void ShooterAction(int rate,Color PlayerColor){
                 cleaner_flag = 1;
                 int j = 0;
                 if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                    counter++;
                     for(j = 0; j < lane_number; j++){
                         if(Gallery->Get(j) == white){
                             break;
