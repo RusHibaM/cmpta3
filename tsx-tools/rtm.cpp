@@ -23,6 +23,7 @@ int cleaner_flag = 0;
 int shooting_flag = 0;
 
 struct timeval start;
+struct timeval new_start;
 
 void ShooterAction(int rate,Color PlayerColor){
     int nretries=0;
@@ -182,10 +183,33 @@ void Printer()
      *  Not a particular concern if we don't shoot two lanes at the same time.
      *
      */
+    struct timeval finish;
+    double total_time_passed = 0;
+    int time_passed;
+    int red_sum = 0;
+    int blue_sum = 0;
+    int round_num = round;
     while(1){
         if(print_flag == 1){
+            gettimeofday(&finish, 0);
+            time_passed = (finish.tv_sec - new_start.tv_sec) * 1000000 + finish.tv_usec - new_start.tv_usec;
             cout<<"Printer in working "<<round<<endl;
+            for(int i = 0; i < lane_number; i++){
+                if(Gallery->Get(i) == red){
+                    red_sum++;
+                }
+                if(Gallery->Get(i) == blue){
+                    blue_sum++;
+                }
+            }
+            cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
+            cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
+            cout<<"Total time used: "<<time_passed<<endl;
+            total_time_passed += time_passed;
+            red_sum = 0;
+            blue_sum = 0;
             Gallery->Print();
+            gettimeofday(&new_start, 0);
             print_flag = 0;
             #ifndef ROGUETMCLEANER
             Gallery->Clear();
@@ -194,6 +218,10 @@ void Printer()
             cleaner_flag = 1;
             while(cleaner_flag);
             #endif
+            if(round == 1){
+                cout<<"Time used: "<<total_time_passed<<endl;
+                cout<<"Average time used: "<<total_time_passed/round_num<<endl;
+            }
             round--;
         }
         if(round == 0){
@@ -243,6 +271,7 @@ int main(int argc, char** argv)
     Gallery = new Lanes(lane_number);
     
     gettimeofday (&start, NULL);
+    gettimeofday(&new_start, 0);
     ths.push_back(std::thread(&ShooterAction,red_rate,red));
     ths.push_back(std::thread(&ShooterAction,blue_rate,blue));
     ths.push_back(std::thread(&Cleaner));
