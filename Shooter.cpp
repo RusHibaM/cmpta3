@@ -15,6 +15,11 @@ int blue_rate;
 int round;
 int lane_number;
 
+int successful_red = 0;
+double red_time = 0;
+int successful_blue = 0;
+int blue_time = 0;
+
 int print_flag = 0;  /* flag used to control the printer */
 
 struct timeval start;
@@ -67,11 +72,12 @@ void ShooterAction(int rate,Color PlayerColor)
      */
     //Gallery->Set(0,PlayerColor);
 #ifdef ROGUECOARSE
-    struct timeval finish;
+    struct timeval finish,new_start;
     int time_passed;
     int successful_shot = 0; /* The time successfully get a shot */
     int r_lane; /* Random lane number */
     int r_lane_flag = 0;
+    gettimeofday(&new_start, 0);
     while(1){
         gettimeofday(&finish, 0);
         time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
@@ -111,6 +117,14 @@ void ShooterAction(int rate,Color PlayerColor)
                             }
                         }
                         if(j == lane_number){
+                            gettimeofday(&finish, 0);
+                            if(PlayerColor==red){
+                                red_time = (finish.tv_sec - new_start.tv_sec) * 1000000 + finish.tv_usec - new_start.tv_usec;
+                                successful_red = successful_shot;
+                            }else{
+                                blue_time = (finish.tv_sec - new_start.tv_sec) * 1000000 + finish.tv_usec - new_start.tv_usec;
+                                successful_blue = successful_shot;
+                            }
                             print_flag = 1;
                             while(print_flag);
                             round--;
@@ -121,6 +135,7 @@ void ShooterAction(int rate,Color PlayerColor)
                             Gallery->Clear();
                             coarseLock.release_lock();
                             cleaner_flag = 0;
+                            gettimeofday(&new_start, 0);
                         }else{
                             cleaner_flag = 0;
                             coarseLock.release_lock();
@@ -869,6 +884,8 @@ void Printer(int rate)
     while(1){
         if(print_flag == 1){
             cout<<"Printer in working"<<endl;
+            cout<<"Red shoot rate: "<<successful_red/red_time<<endl;
+            cout<<"Blue shoot rate: "<<successful_blue/blue_time<<endl;
             Gallery->Print();
             print_flag = 0;
         }
