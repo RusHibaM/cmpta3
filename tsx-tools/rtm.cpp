@@ -83,6 +83,8 @@ void ShooterAction(int rate,Color PlayerColor){
                         suc++;
                         succ = suc;
                         myabort = nretries;
+                        suc = 0;
+                        nretries = 0;
                         print_flag = 1;
                         _xend ();
                     }else{
