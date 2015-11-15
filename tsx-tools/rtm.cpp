@@ -18,7 +18,7 @@ int blue_rate;
 int round;
 int lane_number;
 
-int abort = 0;
+int myabort = 0;
 int succ = 0;
 
 int print_flag = 0;  /* flag used to control the printer */
@@ -82,7 +82,7 @@ void ShooterAction(int rate,Color PlayerColor){
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                         suc++;
                         succ = suc;
-                        abort = nretries;
+                        myabort = nretries;
                         print_flag = 1;
                         _xend ();
                     }else{
@@ -218,7 +218,7 @@ void Printer()
             cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
             cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
             cout<<"Total time used: "<<time_passed<<endl;
-            cout<<"Abort rate: "<<abort*1.0/(succ + abort)<<endl;
+            cout<<"Abort rate: "<<myabort*1.0/(succ + myabort)<<endl;
             total_time_passed += time_passed;
             red_sum = 0;
             blue_sum = 0;
