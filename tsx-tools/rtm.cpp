@@ -53,7 +53,6 @@ void ShooterAction(int rate,Color PlayerColor){
         /* Shoot the lane if the lane is white*/
         if(this_color == white&&!cleaner_flag){
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
-                cout<<"shoot"<<endl;
                 Gallery->Set(r_lane,PlayerColor);
                 successful_shot++;
                 _xend ();
@@ -61,15 +60,30 @@ void ShooterAction(int rate,Color PlayerColor){
                 nretries++;
             }
         }else{
-            int l_num = lane_number;
-            if ((status = _xbegin ()) == _XBEGIN_STARTED) {
-                //cleaner_flag = 1;
-                print_flag = 1;
-                while(print_flag);
-                _xend ();
-            }else{
-                nretries++;
+            r_lane_flag++;
+            if(r_lane_flag >= lane_number/2){
+                int j = 0;
+                for(j = 0; j < lane_number; j++){
+                    if(Gallery->Get(j) == white){
+                        break;
+                    }
+                }
+                if(j == lane_number){
+                    if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                        print_flag = 1;
+                        sleep(1);
+                        Gallery->Clear();
+                        sleep(1);
+                        _xend ();
+                    }else{
+                        nretries++;
+                    }
+                }
+                
             }
+            
+                //cleaner_flag = 1;
+                
 //            r_lane_flag++;
 //            if(r_lane_flag >= lane_number/2){
 //                #ifndef ROGUETMCLEANER
