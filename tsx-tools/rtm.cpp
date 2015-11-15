@@ -71,8 +71,7 @@ void ShooterAction(int rate,Color PlayerColor){
                 if(j == lane_number){
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                         print_flag = 1;
-                        sleep(1);
-                        //Gallery->Clear();
+                        Gallery->Clear();
                         //sleep(1);
                         _xend ();
                     }else{
