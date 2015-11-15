@@ -155,29 +155,20 @@ void Cleaner()
      *  Once all lanes are shot. Cleaner starts up.
      *  Once cleaner starts up shooters wait for cleaner to finish.
      */
-//    while(1){
-//        if(cleaner_flag == 1){
-//            int i;
-//            for(i = 0; i < lane_number; i++){
-//                if(Gallery->Get(i) == white){
-//                    break;
-//                }
-//            }
-//            if(i >= lane_number){
-//                print_flag = 1;
-//                while(print_flag);
-//                round--;
-//                if(round == 0){
-//                    exit(0);
-//                }
-//                sleep(1);
-//                cout<<"Rogue Coarse Cleaner in working"<<endl;
-//                cout<<endl;
-//                Gallery->Clear();
-//            }
-//            cleaner_flag = 0;
-//        }
-//    }
+    while(1){
+        if(cleaner_flag == 1){
+            int i;
+            for(i = 0; i < lane_number; i++){
+                if(Gallery->Get(i) == white){
+                    break;
+                }
+            }
+            if(i >= lane_number){
+                Gallery->Clear();
+            }
+            cleaner_flag = 0;
+        }
+    }
 }
 
 
@@ -196,7 +187,13 @@ void Printer()
             cout<<"Printer in working "<<round<<endl;
             Gallery->Print();
             print_flag = 0;
+            #ifndef ROGUETMCLEANER
             Gallery->Clear();
+            #endif
+            #ifdef ROGUETMCLEANER
+            cleaner_flag = 1;
+            while(cleaner_flag);
+            #endif
             round--;
         }
         if(round == 0){
