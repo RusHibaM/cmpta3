@@ -75,7 +75,7 @@ void ShooterAction(int rate,Color PlayerColor)
      */
     //Gallery->Set(0,PlayerColor);
 #ifdef ROGUECOARSE
-    int is_wait_for_lock = 1;
+    int is_wait_for_lock = 0;
     struct timeval finish;
     struct timeval lock_wait_start,lock_wait_finish;
     double time_waited = 0;
@@ -83,7 +83,6 @@ void ShooterAction(int rate,Color PlayerColor)
     int successful_shot = 0; /* The time successfully get a shot */
     int r_lane; /* Random lane number */
     int r_lane_flag = 0;
-    gettimeofday(&lock_wait_start, 0);
     while(1){
         gettimeofday(&finish, 0);
         time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
@@ -920,7 +919,7 @@ void Printer(int rate)
             }
             cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
             cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
-            cout<<"Time used to wait for lock"<<time_to_wait_lock<<endl;
+            cout<<"Time used to wait for lock: "<<time_to_wait_lock<<endl;
             cout<<"Total time used: "<<time_passed<<endl;
             total_time_passed += time_passed;
             red_sum = 0;
