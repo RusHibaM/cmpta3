@@ -91,14 +91,13 @@ void ShooterAction(int rate,Color PlayerColor)
         }else{
             ;
         }
+        while(cleaner_flag);/* Another thread is working as a cleaner */
         if(is_wait_for_lock){
             gettimeofday(&lock_wait_finish, 0);
-            time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
         }else{
             gettimeofday(&lock_wait_start, 0);
             is_wait_for_lock = 1;
         }
-        while(cleaner_flag);/* Another thread is working as a cleaner */
         #ifdef LOCKFIRST
         /* Try acquire the lock */
         if(!coarseLock.check_lock()&&!cleaner_flag){
