@@ -329,17 +329,19 @@ void ShooterAction(int rate,Color PlayerColor)
                         break;
                     }
                 }
-                if(j == lane_number){
-                    print_flag = 1;
-                    while(print_flag);
-                    round--;
-                    if(round == 0){
-                        exit(0);
+                if(j == lane_number&&print_flag==0){
+                    if(!print_flag){
+                        print_flag = 1;
+                        while(print_flag);
+                        round--;
+                        if(round == 0){
+                            exit(0);
+                        }
+                        //sleep(1);
+                        Gallery->Clear();
+                        fineLocks[r_lane].release_lock();
+                        cleaner_flag = 0;
                     }
-                    //sleep(1);
-                    Gallery->Clear();
-                    fineLocks[r_lane].release_lock();
-                    cleaner_flag = 0;
                 }else{
                     cleaner_flag = 0;
                     fineLocks[r_lane].release_lock();
