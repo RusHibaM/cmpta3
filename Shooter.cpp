@@ -181,6 +181,9 @@ void ShooterAction(int rate,Color PlayerColor)
             if(!coarseLock.check_lock()&&!cleaner_flag){
                 /* Double check to gaurantee the synchronization */
                 if (coarseLock.set_lock()&&!cleaner_flag) {
+                    gettimeofday(&lock_wait_finish, 0);
+                    time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+                    is_wait_for_lock = 0;
                     if(Gallery->Get(r_lane)==white){
                         Gallery->Set(r_lane,PlayerColor);
                         successful_shot++;
@@ -212,6 +215,9 @@ void ShooterAction(int rate,Color PlayerColor)
                         exit(0);
                     }
                     //sleep(1);
+                    time_to_wait_lock += time_waited;
+                    
+                    time_waited = 0;
                     Gallery->Clear();
                     coarseLock.release_lock();
                     cleaner_flag = 0;
@@ -233,6 +239,9 @@ void ShooterAction(int rate,Color PlayerColor)
 #endif
     
 #ifdef ROGUEFINE
+    int is_wait_for_lock = 0;
+    struct timeval lock_wait_start,lock_wait_finish;
+    double time_waited = 0;
     struct timeval finish;
     int time_passed;
     int successful_shot = 0; /* The time successfully get a shot */
@@ -247,6 +256,12 @@ void ShooterAction(int rate,Color PlayerColor)
             ;
         }
         while(cleaner_flag);/* Another thread is working as a cleaner */
+        if(is_wait_for_lock){
+            gettimeofday(&lock_wait_finish, 0);
+        }else{
+            gettimeofday(&lock_wait_start, 0);
+            is_wait_for_lock = 1;
+        }
         #ifdef LOCKFIRST
         /* Try get a lane */
         /* r_lane is the lane */
@@ -255,6 +270,9 @@ void ShooterAction(int rate,Color PlayerColor)
         if(!fineLocks[r_lane].check_lock()&&!cleaner_flag){
             /* Double check to gaurantee the synchronization */
             if (fineLocks[r_lane].set_lock()&&!cleaner_flag) {
+                gettimeofday(&lock_wait_finish, 0);
+                time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+                is_wait_for_lock = 0;
                 
                 /* Check if the lane is white */
                 Color this_color = Gallery->Get(r_lane);
@@ -286,6 +304,9 @@ void ShooterAction(int rate,Color PlayerColor)
                                 exit(0);
                             }
                             //sleep(1);
+                            time_to_wait_lock += time_waited;
+                            
+                            time_waited = 0;
                             Gallery->Clear();
                             fineLocks[r_lane].release_lock();
                             cleaner_flag = 0;
@@ -323,6 +344,9 @@ void ShooterAction(int rate,Color PlayerColor)
             if(!fineLocks[r_lane].check_lock()&&!cleaner_flag){
                 /* Double check to gaurantee the synchronization */
                 if (fineLocks[r_lane].set_lock()&&!cleaner_flag) {
+                    gettimeofday(&lock_wait_finish, 0);
+                    time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+                    is_wait_for_lock = 0;
                     /* Check if the lane is white */
                     if(Gallery->Get(r_lane)==white){
                         Gallery->Set(r_lane,PlayerColor);
@@ -356,6 +380,9 @@ void ShooterAction(int rate,Color PlayerColor)
                             exit(0);
                         }
                         //sleep(1);
+                        time_to_wait_lock += time_waited;
+                        
+                        time_waited = 0;
                         Gallery->Clear();
                         fineLocks[r_lane].release_lock();
                         cleaner_flag = 0;
@@ -378,6 +405,9 @@ void ShooterAction(int rate,Color PlayerColor)
 #endif
     
 #ifdef ROGUETM
+    int is_wait_for_lock = 0;
+    struct timeval lock_wait_start,lock_wait_finish;
+    double time_waited = 0;
     struct timeval finish;
     int time_passed;
     int successful_shot = 0; /* The time successfully get a shot */
@@ -392,6 +422,12 @@ void ShooterAction(int rate,Color PlayerColor)
             ;
         }
         while(cleaner_flag);/* Another thread is working as a cleaner */
+        if(is_wait_for_lock){
+            gettimeofday(&lock_wait_finish, 0);
+        }else{
+            gettimeofday(&lock_wait_start, 0);
+            is_wait_for_lock = 1;
+        }
         #ifdef LOCKFIRST
         /* Try get a lane */
         /* r_lane is the lane */
@@ -518,6 +554,9 @@ void ShooterAction(int rate,Color PlayerColor)
 #endif
     
 #ifdef ROGUEFINE2
+    int is_wait_for_lock = 0;
+    struct timeval lock_wait_start,lock_wait_finish;
+    double time_waited = 0;
     struct timeval finish;
     int time_passed;
     int successful_shot = 0; /* The time successfully get a shot */
@@ -533,6 +572,12 @@ void ShooterAction(int rate,Color PlayerColor)
             ;
         }
         while(cleaner_flag);/* Another thread is working as a cleaner */
+        if(is_wait_for_lock){
+            gettimeofday(&lock_wait_finish, 0);
+        }else{
+            gettimeofday(&lock_wait_start, 0);
+            is_wait_for_lock = 1;
+        }
         #ifdef LOCKFIRST
         /* Try get a lane */
         /* r_lane is the lane */
@@ -545,6 +590,9 @@ void ShooterAction(int rate,Color PlayerColor)
         if(!fineLocks[r_lane].check_lock()&&!fineLocks[r_lane_2].check_lock()&&!cleaner_flag){
             /* Double check to gaurantee the synchronization */
             if (fineLocks[r_lane].set_lock()&&fineLocks[r_lane_2].set_lock()&&!cleaner_flag) {
+                gettimeofday(&lock_wait_finish, 0);
+                time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+                is_wait_for_lock = 0;
                 
                 /* Check if the lane is white */
                 Color this_color = Gallery->Get(r_lane);
@@ -579,6 +627,9 @@ void ShooterAction(int rate,Color PlayerColor)
                                 exit(0);
                             }
                             //sleep(1);
+                            time_to_wait_lock += time_waited;
+                            
+                            time_waited = 0;
                             Gallery->Clear();
                             fineLocks[r_lane].release_lock();
                             fineLocks[r_lane_2].release_lock();
@@ -609,69 +660,93 @@ void ShooterAction(int rate,Color PlayerColor)
         #endif
         #ifdef CHECKFIRST
         /* Try acquire the lock */
-        if(!coarseLock.check_lock()&&!cleaner_flag){
-            /* Double check to gaurantee the synchronization */
-            if (coarseLock.set_lock()&&!cleaner_flag) {
-                /* Try get a lane */
-                /* r_lane is the lane */
-                r_lane = rand()%lane_number;
+        /* Try get a lane */
+        /* r_lane is the lane */
+        r_lane = rand()%lane_number;
+        r_lane_2 = rand()%lane_number;
+        while(r_lane==r_lane_2){
+            r_lane_2 = rand()%lane_number;
+        }
                 
-                /* Check if the lane is white */
-                Color this_color = Gallery->Get(r_lane);
-                
-                /* Shoot the lane if the lane is white*/
-                if(this_color == white&&!cleaner_flag){
-                    Gallery->Set(r_lane,PlayerColor);
-                    successful_shot++;
-                    coarseLock.release_lock();
-                }else{
-                    r_lane_flag++;
-                    if(r_lane_flag >= lane_number/2){
-                        r_lane_flag = 0;
-                        #ifndef ROGUECOARSECLEANER
-                        cleaner_flag = 1;
-                        int j;
-                        for(j = 0; j < lane_number; j++){
-                            if(Gallery->Get(j) == white){
-                                break;
-                            }
-                        }
-                        if(j == lane_number){
-                            print_flag = 1;
-                            while(print_flag);
-                            round--;
-                            if(round == 0){
-                                exit(0);
-                            }
-                            sleep(1);
-                            Gallery->Clear();
-                            coarseLock.release_lock();
-                            cleaner_flag = 0;
-                        }else{
-                            cleaner_flag = 0;
-                            coarseLock.release_lock();
-                        }
-                        #endif
-                        #ifdef ROGUECOARSECLEANER
-                        cleaner_flag = 1;
-                        while(cleaner_flag);
-                        coarseLock.release_lock();
-                        #endif
+        /* Check if the lane is white */
+        Color this_color = Gallery->Get(r_lane);
+        Color this_color_2 = Gallery->Get(r_lane_2);
+        
+        /* Shoot the lane if the lane is white*/
+        if(this_color == white && this_color_2 == white && !cleaner_flag){
+            if(Gallery->Get(r_lane)==white && Gallery->Get(r_lane_2)==white){
+                /* Try acquire the lock */
+                if(!fineLocks[r_lane].check_lock()&&!fineLocks[r_lane_2].check_lock()&&!cleaner_flag){
+                    /* Double check to gaurantee the synchronization */
+                    if (fineLocks[r_lane].set_lock()&&fineLocks[r_lane_2].set_lock()&&!cleaner_flag) {
+                        gettimeofday(&lock_wait_finish, 0);
+                        time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+                        is_wait_for_lock = 0;
+                    }else{
+                        continue;
                     }
-                    coarseLock.release_lock();
+                }else{
+                    continue;
                 }
-                
-            }else{
-                continue;
+                Gallery->Set(r_lane,PlayerColor);
+                Gallery->Set(r_lane_2,PlayerColor);
+                successful_shot = successful_shot + 2;
+                fineLocks[r_lane].release_lock();
+                fineLocks[r_lane_2].release_lock();
             }
         }else{
-            continue;
+            r_lane_flag++;
+            if(r_lane_flag >= lane_number/2){
+                r_lane_flag = 0;
+                #ifndef ROGUEFINECLEANER
+                cleaner_flag = 1;
+                int j;
+                for(j = 0; j < lane_number; j++){
+                    if(Gallery->Get(j) == white){
+                        break;
+                    }
+                }
+                if(j == lane_number){
+                    print_flag = 1;
+                    while(print_flag);
+                    round--;
+                    if(round == 0){
+                        exit(0);
+                    }
+                    //sleep(1);
+                    time_to_wait_lock += time_waited;
+                    
+                    time_waited = 0;
+                    Gallery->Clear();
+                    fineLocks[r_lane].release_lock();
+                    fineLocks[r_lane_2].release_lock();
+                    cleaner_flag = 0;
+                }else{
+                    fineLocks[r_lane].release_lock();
+                    fineLocks[r_lane_2].release_lock();
+                    cleaner_flag = 0;
+                }
+#endif
+#ifdef ROGUEFINECLEANER
+                cleaner_flag = 1;
+                while(cleaner_flag);
+                fineLocks[r_lane].release_lock();
+                fineLocks[r_lane_2].release_lock();
+#endif
+            }
+            fineLocks[r_lane].release_lock();
+            fineLocks[r_lane_2].release_lock();
         }
+        
+            
         #endif
     }
 #endif
     
 #ifdef ROGUECOARSE2
+    int is_wait_for_lock = 0;
+    struct timeval lock_wait_start,lock_wait_finish;
+    double time_waited = 0;
     struct timeval finish;
     int time_passed;
     int successful_shot = 0; /* The time successfully get a shot */
@@ -687,11 +762,20 @@ void ShooterAction(int rate,Color PlayerColor)
             ;
         }
         while(cleaner_flag);/* Another thread is working as a cleaner */
+        if(is_wait_for_lock){
+            gettimeofday(&lock_wait_finish, 0);
+        }else{
+            gettimeofday(&lock_wait_start, 0);
+            is_wait_for_lock = 1;
+        }
         #ifdef LOCKFIRST
         /* Try acquire the lock */
         if(!coarseLock.check_lock()&&!cleaner_flag){
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
+                gettimeofday(&lock_wait_finish, 0);
+                time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+                is_wait_for_lock = 0;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
@@ -732,6 +816,9 @@ void ShooterAction(int rate,Color PlayerColor)
                                 exit(0);
                             }
                             //sleep(1);
+                            time_to_wait_lock += time_waited;
+                            
+                            time_waited = 0;
                             Gallery->Clear();
                             coarseLock.release_lock();
                             cleaner_flag = 0;
@@ -757,65 +844,81 @@ void ShooterAction(int rate,Color PlayerColor)
         }
         #endif
         #ifdef CHECKFIRST
-        /* Try acquire the lock */
-        if(!coarseLock.check_lock()&&!cleaner_flag){
-            /* Double check to gaurantee the synchronization */
-            if (coarseLock.set_lock()&&!cleaner_flag) {
-                /* Try get a lane */
-                /* r_lane is the lane */
-                r_lane = rand()%lane_number;
-                
-                /* Check if the lane is white */
-                Color this_color = Gallery->Get(r_lane);
-                
-                /* Shoot the lane if the lane is white*/
-                if(this_color == white&&!cleaner_flag){
-                    Gallery->Set(r_lane,PlayerColor);
-                    successful_shot++;
-                    coarseLock.release_lock();
-                }else{
-                    r_lane_flag++;
-                    if(r_lane_flag >= lane_number/2){
-                        r_lane_flag = 0;
-                        #ifndef ROGUECOARSECLEANER
-                        cleaner_flag = 1;
-                        int j;
-                        for(j = 0; j < lane_number; j++){
-                            if(Gallery->Get(j) == white){
-                                break;
-                            }
-                        }
-                        if(j == lane_number){
-                            print_flag = 1;
-                            while(print_flag);
-                            round--;
-                            if(round == 0){
-                                exit(0);
-                            }
-                            sleep(1);
-                            Gallery->Clear();
-                            coarseLock.release_lock();
-                            cleaner_flag = 0;
-                        }else{
-                            cleaner_flag = 0;
-                            coarseLock.release_lock();
-                        }
-                        #endif
-                        #ifdef ROGUECOARSECLEANER
-                        cleaner_flag = 1;
-                        while(cleaner_flag);
+        
+        /* Try get a lane */
+        /* r_lane is the lane */
+        r_lane = rand()%lane_number;
+        r_lane_2 = rand()%lane_number;
+        while(r_lane==r_lane_2){
+            r_lane_2 = rand()%lane_number;
+        }
+        
+        /* Check if the lane is white */
+        Color this_color = Gallery->Get(r_lane);
+        Color this_color_2 = Gallery->Get(r_lane_2);
+        
+        /* Shoot the lane if the lane is white*/
+        if(this_color == white && this_color_2 == white && !cleaner_flag){
+            if(Gallery->Get(r_lane)==white && Gallery->Get(r_lane_2)==white){
+                /* Try acquire the lock */
+                if(!coarseLock.check_lock()&&!cleaner_flag){
+                    /* Double check to gaurantee the synchronization */
+                    if (coarseLock.set_lock()&&!cleaner_flag) {
+                        gettimeofday(&lock_wait_finish, 0);
+                        time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+                        is_wait_for_lock = 0;
+                        Gallery->Set(r_lane,PlayerColor);
+                        Gallery->Set(r_lane_2,PlayerColor);
+                        successful_shot = successful_shot + 2;
                         coarseLock.release_lock();
-                        #endif
+                    }else{
+                        continue;
                     }
-                    coarseLock.release_lock();
+                }else{
+                    continue;
                 }
-                
-            }else{
-                continue;
             }
         }else{
-            continue;
+            r_lane_flag++;
+            if(r_lane_flag >= lane_number/2){
+                r_lane_flag = 0;
+#ifndef ROGUECOARSECLEANER
+                cleaner_flag = 1;
+                int j;
+                for(j = 0; j < lane_number; j++){
+                    if(Gallery->Get(j) == white){
+                        break;
+                    }
+                }
+                if(j == lane_number){
+                    print_flag = 1;
+                    while(print_flag);
+                    round--;
+                    if(round == 0){
+                        exit(0);
+                    }
+                    //sleep(1);
+                    time_to_wait_lock += time_waited;
+                    
+                    time_waited = 0;
+                    Gallery->Clear();
+                    coarseLock.release_lock();
+                    cleaner_flag = 0;
+                }else{
+                    cleaner_flag = 0;
+                    coarseLock.release_lock();
+                }
+#endif
+#ifdef ROGUECOARSECLEANER
+                cleaner_flag = 1;
+                while(cleaner_flag);
+                coarseLock.release_lock();
+#endif
+            }
+            coarseLock.release_lock();
         }
+        
+            
         #endif
     }
 #endif
