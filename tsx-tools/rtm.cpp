@@ -41,25 +41,30 @@ void ShooterAction(int rate,Color PlayerColor){
         }else{
             ;
         }
-        cout<<"xbegin started "<<_XBEGIN_STARTED<<endl;
-        cout<<"Status is "<<_xbegin ()<<endl;
-        if ((status = _xbegin ()) == _XBEGIN_STARTED) {
-            counter++;
-            /* Try get a lane */
-            /* r_lane is the lane */
-            r_lane = rand()%lane_number;
-            cout<<"Player"<<PlayerColor<<" get into the transaction"<<endl;
+        /* Try get a lane */
+        /* r_lane is the lane */
+        r_lane = rand()%lane_number;
+        
+        /* Check if the lane is white */
+        Color this_color = Gallery->Get(r_lane);
+        
+        
             
-            /* Check if the lane is white */
-            Color this_color = Gallery->Get(r_lane);
+            //cout<<"Player"<<PlayerColor<<" get into the transaction"<<endl;
+            
+            
             /* Shoot the lane if the lane is white*/
             if(this_color == white&&!cleaner_flag){
-                cout<<"Player"<<PlayerColor<<" ready to shoot to "<<r_lane<<endl;
-                Gallery->Set(r_lane,PlayerColor);
-                successful_shot++;
-                _xend ();
+                //cout<<"Player"<<PlayerColor<<" ready to shoot to "<<r_lane<<endl;
+                if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                    Gallery->Set(r_lane,PlayerColor);
+                    successful_shot++;
+                    _xend ();
+                }else{
+                    nretries++;
+                }
             }else{
-                cout<<"Player"<<PlayerColor<<" fail to shoot to "<<r_lane<<endl;
+                //cout<<"Player"<<PlayerColor<<" fail to shoot to "<<r_lane<<endl;
                 r_lane_flag++;
                 if(r_lane_flag >= lane_number/2){
                     r_lane_flag = 0;
@@ -80,11 +85,9 @@ void ShooterAction(int rate,Color PlayerColor){
                         }
                         sleep(1);
                         Gallery->Clear();
-                        _xend ();
                         cleaner_flag = 0;
                     }else{
                         cleaner_flag = 0;
-                        _xend ();
                     }
                     #endif
                     #ifdef ROGUETMCLEANER
@@ -93,10 +96,7 @@ void ShooterAction(int rate,Color PlayerColor){
                     #endif
                 }
             }
-            _xend ();
-        }else{
-            nretries++;
-        }
+            
         cout<<"This the "<<nretries<<"th try."<<endl;
     }
 }
