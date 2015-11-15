@@ -60,6 +60,7 @@ void ShooterAction(int rate,Color PlayerColor){
                 nretries++;
             }
         }else{
+            cout<<"123"<<endl;
             r_lane_flag++;
             if(r_lane_flag >= lane_number/2){
                 int j = 0;
@@ -69,6 +70,7 @@ void ShooterAction(int rate,Color PlayerColor){
                     }
                 }
                 if(j == lane_number){
+                    cout<<"1234"<<endl;
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                         print_flag = 1;
                         sleep(1);
@@ -77,6 +79,7 @@ void ShooterAction(int rate,Color PlayerColor){
                         _xend ();
                     }else{
                         nretries++;
+                        cout<<"12345"<<endl;
                     }
                 }
                 
