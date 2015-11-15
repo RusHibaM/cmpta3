@@ -101,9 +101,11 @@ void ShooterAction(int rate,Color PlayerColor)
                 
                 /* Shoot the lane if the lane is white*/
                 if(this_color == white&&!cleaner_flag){
-                    Gallery->Set(r_lane,PlayerColor);
-                    successful_shot++;
-                    coarseLock.release_lock();
+                    if(Gallery->Get(r_lane)==white){
+                        Gallery->Set(r_lane,PlayerColor);
+                        successful_shot++;
+                        coarseLock.release_lock();
+                    }
                 }else{
                     r_lane_flag++;
                     if(r_lane_flag >= lane_number/2){
