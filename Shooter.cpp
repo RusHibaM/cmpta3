@@ -23,6 +23,7 @@ int blue_time = 0;
 int print_flag = 0;  /* flag used to control the printer */
 
 struct timeval start;
+struct timeval new_start;
 
 #ifdef ROGUECOARSE
 
@@ -72,12 +73,11 @@ void ShooterAction(int rate,Color PlayerColor)
      */
     //Gallery->Set(0,PlayerColor);
 #ifdef ROGUECOARSE
-    struct timeval finish,new_start;
+    struct timeval finish;
     int time_passed;
     int successful_shot = 0; /* The time successfully get a shot */
     int r_lane; /* Random lane number */
     int r_lane_flag = 0;
-    gettimeofday(&new_start, 0);
     while(1){
         gettimeofday(&finish, 0);
         time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
@@ -117,26 +117,16 @@ void ShooterAction(int rate,Color PlayerColor)
                             }
                         }
                         if(j == lane_number){
-                            gettimeofday(&finish, 0);
-                            if(PlayerColor==red){
-                                red_time = (finish.tv_sec - new_start.tv_sec) * 1000000 + finish.tv_usec - new_start.tv_usec;
-                                successful_red = successful_shot;
-                            }else{
-                                blue_time = (finish.tv_sec - new_start.tv_sec) * 1000000 + finish.tv_usec - new_start.tv_usec;
-                                successful_blue = successful_shot;
-                            }
-                            successful_shot = 0;
                             print_flag = 1;
                             while(print_flag);
                             round--;
                             if(round == 0){
                                 exit(0);
                             }
-                            sleep(1);
+                            //sleep(1);
                             Gallery->Clear();
                             coarseLock.release_lock();
                             cleaner_flag = 0;
-                            gettimeofday(&new_start, 0);
                         }else{
                             cleaner_flag = 0;
                             coarseLock.release_lock();
@@ -882,12 +872,26 @@ void Printer(int rate)
      */
     struct timeval finish;
     int time_passed;
+    int red_sum = 0;
+    int blue_sum = 0;
     while(1){
         if(print_flag == 1){
+            gettimeofday(&finish, 0);
+            time_passed = (finish.tv_sec - new_start.tv_sec) * 1000000 + finish.tv_usec - new_start.tv_usec;
             cout<<"Printer in working"<<endl;
-            cout<<"Red shoot: "<<successful_red<<endl;
-            cout<<"Blue shoot: "<<successful_blue<<endl;
+            cout<<"Time used: "<<time_passed<<endl;
+            for(int i = 0; i < lane_number; i++){
+                if(Gallery->Get(i) == red){
+                    red_sum++;
+                }
+                if(Gallery->Get(i) == blue){
+                    blue_sum++;
+                }
+            }
+            cout<<"Red shoot: "<<red_sum<<endl;
+            cout<<"Blue shoot:"<<blue_sum<<endl;
             Gallery->Print();
+            gettimeofday(&new_start, 0);
             print_flag = 0;
         }
     }
@@ -960,7 +964,8 @@ int main(int argc, char** argv)
     Gallery = new Lanes(lane_number);
     //    std::thread RedShooterT,BlueShooterT,CleanerT,PrinterT;
 
-    gettimeofday (&start, NULL);
+    gettimeofday(&start, NULL);
+    gettimeofday(&new_start, NULL);
     ths.push_back(std::thread(&ShooterAction,red_rate,red));
     ths.push_back(std::thread(&ShooterAction,blue_rate,blue));
     ths.push_back(std::thread(&Cleaner));
