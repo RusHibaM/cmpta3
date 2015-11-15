@@ -62,32 +62,7 @@ void ShooterAction(int rate,Color PlayerColor){
         }else{
             int l_num = lane_number;
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
-                r_lane_flag++;
-                if(r_lane_flag >= l_num/2){
-                    r_lane_flag = 0;
-                    cleaner_flag = 1;
-                }
-                int j = 0;
-                for(j = 0; j < l_num; j++){
-                    if(Gallery->Get(j) == white){
-                        break;
-                    }
-                }
-                if(j == l_num){
-                    print_flag = 1;
-                    while(print_flag);
-                    round--;
-                    if(round == 0){
-                        exit(0);
-                    }
-                    sleep(1);
-                    Gallery->Clear();
-                    cout<<"Cleaner work "<<round<<endl;
-                    cleaner_flag = 0;
-                }else{
-                    cleaner_flag = 0;
-                }
-
+                cleaner_flag = 1;
                 _xend ();
             }else{
                 nretries++;
