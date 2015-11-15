@@ -42,6 +42,7 @@ void ShooterAction(int rate,Color PlayerColor){
             ;
         }
         if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+            counter++;
             /* Try get a lane */
             /* r_lane is the lane */
             r_lane = rand()%lane_number;
