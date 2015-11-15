@@ -164,14 +164,16 @@ void ShooterAction(int rate,Color PlayerColor)
                 
                 /* Shoot the lane if the lane is white*/
                 if(this_color == white&&!cleaner_flag){
-                    Gallery->Set(r_lane,PlayerColor);
-                    successful_shot++;
-                    coarseLock.release_lock();
+                    if(Gallery->Get(r_lane)==white){
+                        Gallery->Set(r_lane,PlayerColor);
+                        successful_shot++;
+                        coarseLock.release_lock();
+                    }
                 }else{
                     r_lane_flag++;
                     if(r_lane_flag >= lane_number/2){
                         r_lane_flag = 0;
-                        #ifndef ROGUECOARSECLEANER
+#ifndef ROGUECOARSECLEANER
                         cleaner_flag = 1;
                         int j;
                         for(j = 0; j < lane_number; j++){
@@ -186,7 +188,7 @@ void ShooterAction(int rate,Color PlayerColor)
                             if(round == 0){
                                 exit(0);
                             }
-                            sleep(1);
+                            //sleep(1);
                             Gallery->Clear();
                             coarseLock.release_lock();
                             cleaner_flag = 0;
@@ -194,12 +196,12 @@ void ShooterAction(int rate,Color PlayerColor)
                             cleaner_flag = 0;
                             coarseLock.release_lock();
                         }
-                        #endif
-                        #ifdef ROGUECOARSECLEANER
+#endif
+#ifdef ROGUECOARSECLEANER
                         cleaner_flag = 1;
                         while(cleaner_flag);
                         coarseLock.release_lock();
-                        #endif
+#endif
                     }
                     coarseLock.release_lock();
                 }
