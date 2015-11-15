@@ -70,8 +70,8 @@ void ShooterAction(int rate,Color PlayerColor){
                 }
                 if(j == lane_number){
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                        round--;
                         print_flag = 1;
-                        //sleep(1);
                         _xend ();
                     }else{
                         nretries++;
@@ -175,6 +175,9 @@ void Printer()
             Gallery->Print();
             print_flag = 0;
             Gallery->Clear();
+        }
+        if(round == 0){
+            exit(0);
         }
     }
 }
