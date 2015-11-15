@@ -74,12 +74,12 @@ void ShooterAction(int rate,Color PlayerColor){
                 if(j == lane_number){
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                         print_flag = 1;
+                        while(print_flag);
                         round--;
                         _xend ();
                     }else{
                         nretries++;
                     }
-                    while(print_flag);
                     if(round == 0){
                         exit(0);
                     }
