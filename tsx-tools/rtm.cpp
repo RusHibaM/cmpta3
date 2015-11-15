@@ -34,6 +34,7 @@ void ShooterAction(int rate,Color PlayerColor){
     int r_lane; /* Random lane number 1*/
     int r_lane_flag = 0;
     
+    #ifdef ROGUETM
     while(1){
         gettimeofday(&finish, 0);
         time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
@@ -81,48 +82,67 @@ void ShooterAction(int rate,Color PlayerColor){
                 }
                 
             }
-            
-                //cleaner_flag = 1;
-                
-//            r_lane_flag++;
-//            if(r_lane_flag >= lane_number/2){
-//                #ifndef ROGUETMCLEANER
-//                r_lane_flag = 0;
-//                cleaner_flag = 1;
-//                int j = 0;
-//                for(j = 0; j < lane_number; j++){
-//                    if(Gallery->Get(j) == white){
-//                        break;
-//                    }
-//                }
-//                if(j == lane_number){
-//                    print_flag = 1;
-//                    if ((status = _xbegin ()) == _XBEGIN_STARTED) {
-//                    round--;
-//                        _xend ();
-//                    }else{
-//                        nretries++;
-//                    }
-//                    while(print_flag);
-//                    if(round == 0){
-//                        exit(0);
-//                    }
-//                    sleep(1);
-//                    Gallery->Clear();
-//                    cout<<"Cleaner work "<<round<<endl;
-//                    cleaner_flag = 0;
-//                }else{
-//                    cleaner_flag = 0;
-//                }
-//                #endif
-//                #ifdef ROGUETMCLEANER
-//                cleaner_flag = 1;
-//                while(cleaner_flag);
-//                #endif
-//            }
-            ;
         }
     }
+    #endif
+    #ifdef ROGUETM2
+    int r_lane_2; /* Random lane number 2*/
+    while(1){
+        gettimeofday(&finish, 0);
+        time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
+        if(time_passed % (1000000/rate) != 0){
+            continue;
+        }else{
+            ;
+        }
+        /* Try get a lane */
+        /* r_lane is the lane */
+        r_lane = rand()%lane_number;
+        r_lane_2 = rand()%lane_number;
+        while(r_lane == r_lane_2){
+            r_lane_2 = rand()%lane_number;
+        }
+        
+        /* Check if the lane is white */
+        Color this_color = Gallery->Get(r_lane);
+        Color this_color_2 = Gallery->Get(r_lane_2);
+        
+        //cout<<"Player"<<PlayerColor<<" get into the transaction"<<endl;
+        
+        /* Shoot the lane if the lane is white*/
+        if(this_color == white&&this_color_2 == white&&!cleaner_flag){
+            if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                shooting_flag = 1;
+                Gallery->Set(r_lane,PlayerColor);
+                Gallery->Set(r_lane_2,PlayerColor);
+                shooting_flag = 0;
+                successful_shot++;
+                _xend ();
+            }else{
+                nretries++;
+            }
+        }else{
+            r_lane_flag++;
+            if(r_lane_flag >= lane_number/2){
+                int j = 0;
+                for(j = 0; j < lane_number; j++){
+                    if(Gallery->Get(j) == white){
+                        break;
+                    }
+                }
+                if(j == lane_number){
+                    if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                        print_flag = 1;
+                        _xend ();
+                    }else{
+                        nretries++;
+                    }
+                }
+                
+            }
+        }
+    }
+    #endif
 }
 
 void Cleaner()
