@@ -62,33 +62,35 @@ void ShooterAction(int rate,Color PlayerColor){
         }else{
             r_lane_flag++;
             if(r_lane_flag >= lane_number/2){
-                r_lane_flag = 0;
                 #ifndef ROGUETMCLEANER
-                cleaner_flag = 1;
-                int j = 0;
-                for(j = 0; j < lane_number; j++){
-                    if(Gallery->Get(j) == white){
-                        break;
+                if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                    r_lane_flag = 0;
+                    cleaner_flag = 1;
+                    int j = 0;
+                    for(j = 0; j < lane_number; j++){
+                        if(Gallery->Get(j) == white){
+                            break;
+                        }
                     }
-                }
-                if(j == lane_number){
-                    if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                    if(j == lane_number){
                         print_flag = 1;
-                        while(print_flag);
                         round--;
                         _xend ();
+                        while(print_flag);
+                        if(round == 0){
+                            exit(0);
+                        }
+                        sleep(1);
+                        Gallery->Clear();
+                        cout<<"Cleaner work "<<round<<endl;
+                        cleaner_flag = 0;
                     }else{
-                        nretries++;
+                        cleaner_flag = 0;
                     }
-                    if(round == 0){
-                        exit(0);
-                    }
-                    sleep(1);
-                    Gallery->Clear();
-                    cout<<"Cleaner work "<<round<<endl;
-                    cleaner_flag = 0;
+                    _xend ();
                 }else{
-                    cleaner_flag = 0;
+                    r_lane_flag = 0;
+                    nretries++;
                 }
                 
                 #endif
