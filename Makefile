@@ -11,10 +11,10 @@ Shooter_Coarse:
 	g++ -DROGUECOARSE -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Coarse2:
-	g++ -DROGUEFINE -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
+	g++ -DROGUECOARSE2 -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Fine:
-	g++ -DROGUECOARSE2 -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
+	g++ -DROGUEFINE -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Fine2:
 	g++ -DROGUEFINE2 -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
