@@ -20,6 +20,8 @@ double red_time = 0;
 int successful_blue = 0;
 int blue_time = 0;
 
+double time_to_wait_lock = 0;
+
 int print_flag = 0;  /* flag used to control the printer */
 
 struct timeval start;
@@ -73,11 +75,15 @@ void ShooterAction(int rate,Color PlayerColor)
      */
     //Gallery->Set(0,PlayerColor);
 #ifdef ROGUECOARSE
+    int is_wait_for_lock = 1;
     struct timeval finish;
+    struct timeval lock_wait_start,lock_wait_finish;
+    double time_waited = 0;
     int time_passed;
     int successful_shot = 0; /* The time successfully get a shot */
     int r_lane; /* Random lane number */
     int r_lane_flag = 0;
+    gettimeofday(&lock_wait_start, 0);
     while(1){
         gettimeofday(&finish, 0);
         time_passed = (finish.tv_sec - start.tv_sec) * 1000000 + finish.tv_usec - start.tv_usec;
@@ -86,12 +92,22 @@ void ShooterAction(int rate,Color PlayerColor)
         }else{
             ;
         }
+        if(is_wait_for_lock){
+            gettimeofday(&lock_wait_finish, 0);
+            time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+        }else{
+            gettimeofday(&lock_wait_start, 0);
+            is_wait_for_lock = 1;
+        }
         while(cleaner_flag);/* Another thread is working as a cleaner */
         #ifdef LOCKFIRST
         /* Try acquire the lock */
         if(!coarseLock.check_lock()&&!cleaner_flag){
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
+                gettimeofday(&lock_wait_finish, 0);
+                time_waited += (lock_wait_finish.tv_sec - lock_wait_start.tv_sec) * 1000000 + lock_wait_finish.tv_usec - lock_wait_start.tv_usec;
+                is_wait_for_lock = 0;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
@@ -126,6 +142,8 @@ void ShooterAction(int rate,Color PlayerColor)
                                 exit(0);
                             }
                             //sleep(1);
+                            time_to_wait_lock = time_waited;
+                            time_waited = 0;
                             Gallery->Clear();
                             coarseLock.release_lock();
                             cleaner_flag = 0;
