@@ -125,6 +125,7 @@ void ShooterAction(int rate,Color PlayerColor)
                                 blue_time = (finish.tv_sec - new_start.tv_sec) * 1000000 + finish.tv_usec - new_start.tv_usec;
                                 successful_blue = successful_shot;
                             }
+                            successful_shot = 0;
                             print_flag = 1;
                             while(print_flag);
                             round--;
