@@ -20,6 +20,7 @@ int lane_number;
 
 int print_flag = 0;  /* flag used to control the printer */
 int cleaner_flag = 0;
+int shooting_flag = 0;
 
 struct timeval start;
 
@@ -53,8 +54,9 @@ void ShooterAction(int rate,Color PlayerColor){
         /* Shoot the lane if the lane is white*/
         if(this_color == white&&!cleaner_flag){
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
-                counter++;
+                shooting_flag = 1;
                 Gallery->Set(r_lane,PlayerColor);
+                shooting_flag = 0;
                 successful_shot++;
                 _xend ();
             }else{
