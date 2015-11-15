@@ -63,7 +63,7 @@ void ShooterAction(int rate,Color PlayerColor){
         }else{
             int l_num = lane_number;
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
-                cleaner_flag = 1;
+                //cleaner_flag = 1;
                 print_flag = 1;
                 while(print_flag);
                 _xend ();
