@@ -20,7 +20,8 @@ double red_time = 0;
 int successful_blue = 0;
 int blue_time = 0;
 
-double time_to_wait_lock = 0;
+double time_to_wait_lock_red = 0;
+double time_to_wait_lock_blue = 0;
 
 int print_flag = 0;  /* flag used to control the printer */
 
@@ -141,7 +142,10 @@ void ShooterAction(int rate,Color PlayerColor)
                                 exit(0);
                             }
                             //sleep(1);
-                            time_to_wait_lock = time_waited;
+                            if(PlayerColor == red)
+                                time_to_wait_lock_red = time_waited;
+                            if(PlayerColor == blue)
+                                time_to_wait_lock_blue = time_waited;
                             time_waited = 0;
                             Gallery->Clear();
                             coarseLock.release_lock();
@@ -919,7 +923,7 @@ void Printer(int rate)
             }
             cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
             cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
-            cout<<"Time used to wait for lock: "<<time_to_wait_lock<<endl;
+            cout<<"Time used to wait for lock: "<<time_to_wait_lock_red + time_to_wait_lock_blue<<endl;
             cout<<"Total time used: "<<time_passed<<endl;
             total_time_passed += time_passed;
             red_sum = 0;
