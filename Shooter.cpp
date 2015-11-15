@@ -20,9 +20,6 @@ double red_time = 0;
 int successful_blue = 0;
 int blue_time = 0;
 
-int overhead_index = 0;
-double overheads[100];
-
 int print_flag = 0;  /* flag used to control the printer */
 
 struct timeval start;
@@ -77,7 +74,6 @@ void ShooterAction(int rate,Color PlayerColor)
     //Gallery->Set(0,PlayerColor);
 #ifdef ROGUECOARSE
     struct timeval finish;
-    struct timeval overhead_start, overhead_finish;
     int time_passed;
     int successful_shot = 0; /* The time successfully get a shot */
     int r_lane; /* Random lane number */
@@ -93,12 +89,9 @@ void ShooterAction(int rate,Color PlayerColor)
         while(cleaner_flag);/* Another thread is working as a cleaner */
         #ifdef LOCKFIRST
         /* Try acquire the lock */
-        gettimeofday(&overhead_start, 0);
         if(!coarseLock.check_lock()&&!cleaner_flag){
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
-                gettimeofday(&overhead_finish, 0);
-                overheads[overhead_index++] = (overhead_finish.tv_sec - overhead_start.tv_sec) * 1000000 + overhead_finish.tv_usec - overhead_start.tv_usec;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
@@ -904,12 +897,7 @@ void Printer(int rate)
             }
             cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
             cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
-            double total_overhead = 0;
-            for(int i = 0; i < overhead_index; i++){
-                total_overhead += overheads[i];
-            }
-            cout<<"Total overheads: "<<total_overhead<<endl;
-            overhead_index = 0;
+            cout<<"Total time used: "<<time_passed<<endl;
             red_sum = 0;
             blue_sum = 0;
             Gallery->Print();
