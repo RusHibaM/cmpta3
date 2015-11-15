@@ -41,6 +41,8 @@ void ShooterAction(int rate,Color PlayerColor){
         }else{
             ;
         }
+        cout<<"xbegin started "<<_XBEGIN_STARTED<<endl;
+        cout<<"Status is "<<_xbegin ()<<endl;
         if ((status = _xbegin ()) == _XBEGIN_STARTED) {
             counter++;
             /* Try get a lane */
@@ -95,8 +97,6 @@ void ShooterAction(int rate,Color PlayerColor){
         }else{
             nretries++;
         }
-        cout<<"xbegin started "<<_XBEGIN_STARTED<<endl;
-        cout<<"Status is "<<status<<endl;
         cout<<"This the "<<nretries<<"th try."<<endl;
     }
 }
