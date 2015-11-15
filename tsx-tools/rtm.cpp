@@ -75,16 +75,20 @@ void ShooterAction(int rate,Color PlayerColor){
                         }
                     }
                     if(j == lane_number){
-                        print_flag = 1;
-                        while(print_flag);
-                        round--;
-                        if(round == 0){
-                            exit(0);
+                        if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                            print_flag = 1;
+                            while(print_flag);
+                            round--;
+                            if(round == 0){
+                                exit(0);
+                            }
+                            sleep(1);
+                            Gallery->Clear();
+                            cout<<"Cleaner work "<<round<<endl;
+                            cleaner_flag = 0;
+                        }else{
+                            nretries++;
                         }
-                        sleep(1);
-                        Gallery->Clear();
-                        cout<<"Cleaner work "<<round<<endl;
-                        cleaner_flag = 0;
                     }else{
                         cleaner_flag = 0;
                     }
