@@ -53,6 +53,7 @@ void ShooterAction(int rate,Color PlayerColor){
         /* Shoot the lane if the lane is white*/
         if(this_color == white&&!cleaner_flag){
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                counter++;
                 Gallery->Set(r_lane,PlayerColor);
                 successful_shot++;
                 _xend ();
