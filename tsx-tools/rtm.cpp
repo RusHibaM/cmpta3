@@ -60,7 +60,6 @@ void ShooterAction(int rate,Color PlayerColor){
                 nretries++;
             }
         }else{
-            if ((status = _xbegin ()) == _XBEGIN_STARTED) {
             r_lane_flag++;
             if(r_lane_flag >= lane_number/2){
                 #ifndef ROGUETMCLEANER
@@ -74,7 +73,12 @@ void ShooterAction(int rate,Color PlayerColor){
                 }
                 if(j == lane_number){
                     print_flag = 1;
+                    if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                     round--;
+                        _xend ();
+                    }else{
+                        nretries++;
+                    }
                     while(print_flag);
                     if(round == 0){
                         exit(0);
@@ -91,10 +95,6 @@ void ShooterAction(int rate,Color PlayerColor){
                 cleaner_flag = 1;
                 while(cleaner_flag);
                 #endif
-            }
-                _xend ();
-            }else{
-                nretries++;
             }
         }
     }
