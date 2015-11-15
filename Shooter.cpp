@@ -884,8 +884,8 @@ void Printer(int rate)
     while(1){
         if(print_flag == 1){
             cout<<"Printer in working"<<endl;
-            cout<<"Red shoot rate: "<<successful_red/red_time<<endl;
-            cout<<"Blue shoot rate: "<<successful_blue/blue_time<<endl;
+            cout<<"Red shoot: "<<successful_red<<endl;
+            cout<<"Blue shoot: "<<successful_blue<<endl;
             Gallery->Print();
             print_flag = 0;
         }
