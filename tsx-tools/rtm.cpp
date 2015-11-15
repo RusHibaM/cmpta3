@@ -144,7 +144,7 @@ void ShooterAction(int rate,Color PlayerColor){
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                         suc++;
                         succ = suc;
-                        abort = nretries;
+                        myabort = nretries;
                         suc = 0;
                         nretries = 0;
                         print_flag = 1;

@@ -7,16 +7,16 @@ Shooter: Shooter.o
 Shooter.o: Shooter.cpp
 	g++ -c -mrtm -std=c++11 -pthread $<
 
-Shooter_Coarse:
+Shooter_TM:
 	g++ -DROGUETM -mrtm -std=c++11 -pthread -o Shooter rtm.cpp
 
-Shooter_Coarse2:
+Shooter_TM2:
 	g++ -DROGUETM2 -mrtm -std=c++11 -pthread -o Shooter rtm.cpp
 
-Shooter_Coarse_Cleaner:
+Shooter_TM_Cleaner:
 	g++ -DROGUETM -DROGUECLEANER -mrtm -std=c++11 -pthread -o Shooter rtm.cpp
 
-Shooter_Coarse2_Cleaner:
+Shooter_TM2_Cleaner:
 	g++ -DROGUETM2 -DROGUECLEANER -mrtm -std=c++11 -pthread -o Shooter rtm.cpp
 
 
