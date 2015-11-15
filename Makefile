@@ -23,10 +23,10 @@ Shooter_Coarse_Cleaner:
 	g++ -DROGUECOARSE -DROGUECOARSECLEANER -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Coarse2_Cleaner:
-	g++ -DROGUEFINE -DROGUECOARSECLEANER -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
+	g++ -DROGUECOARSE2 -DROGUECOARSECLEANER -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Fine_Cleaner:
-	g++ -DROGUECOARSE2 -DROGUEFINECLEANER -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
+	g++ -DROGUEFINE -DROGUEFINECLEANER -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Fine2_Cleaner:
 	g++ -DROGUEFINE2 -DROGUEFINECLEANER -DLOCKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
@@ -48,10 +48,10 @@ Shooter_Coarse_Cleaner_Checkfirst:
 	g++ -DROGUECOARSE -DROGUECOARSECLEANER -DCHECKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Coarse2_Cleaner_Checkfirst:
-	g++ -DROGUEFINE -DROGUECOARSECLEANER -DCHECKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
+	g++ -DROGUECOARSE2 -DROGUECOARSECLEANER -DCHECKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Fine_Cleaner_Checkfirst:
-	g++ -DROGUECOARSE2 -DROGUEFINECLEANER -DCHECKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
+	g++ -DROGUEFINE -DROGUEFINECLEANER -DCHECKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
 
 Shooter_Fine2_Cleaner_Checkfirst:
 	g++ -DROGUEFINE2 -DROGUEFINECLEANER -DCHECKFIRST -mrtm -std=c++11 -pthread -o Shooter Shooter.cpp
