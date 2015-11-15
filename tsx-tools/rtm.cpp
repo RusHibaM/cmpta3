@@ -65,7 +65,7 @@ void ShooterAction(int rate,Color PlayerColor){
                 r_lane_flag = 0;
                 #ifndef ROGUETMCLEANER
                 cleaner_flag = 1;
-                int j;
+                int j = 0;
                 if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                     for(j = 0; j < lane_number; j++){
                         if(Gallery->Get(j) == white){
