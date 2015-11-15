@@ -71,7 +71,6 @@ void ShooterAction(int rate,Color PlayerColor){
                 if(j == lane_number){
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                         print_flag = 1;
-                        Gallery->Clear();
                         //sleep(1);
                         _xend ();
                     }else{
@@ -175,6 +174,7 @@ void Printer()
             cout<<"Printer in working "<<round<<endl;
             Gallery->Print();
             print_flag = 0;
+            Gallery->Clear();
         }
     }
 }
