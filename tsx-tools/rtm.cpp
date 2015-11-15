@@ -48,56 +48,51 @@ void ShooterAction(int rate,Color PlayerColor){
         /* Check if the lane is white */
         Color this_color = Gallery->Get(r_lane);
         
+        //cout<<"Player"<<PlayerColor<<" get into the transaction"<<endl;
         
-            
-            //cout<<"Player"<<PlayerColor<<" get into the transaction"<<endl;
-            
-            
-            /* Shoot the lane if the lane is white*/
-            if(this_color == white&&!cleaner_flag){
-                //cout<<"Player"<<PlayerColor<<" ready to shoot to "<<r_lane<<endl;
-                if ((status = _xbegin ()) == _XBEGIN_STARTED) {
-                    Gallery->Set(r_lane,PlayerColor);
-                    successful_shot++;
-                    _xend ();
-                }else{
-                    nretries++;
-                }
+        
+        /* Shoot the lane if the lane is white*/
+        if(this_color == white&&!cleaner_flag){
+            if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                Gallery->Set(r_lane,PlayerColor);
+                successful_shot++;
+                _xend ();
             }else{
-                //cout<<"Player"<<PlayerColor<<" fail to shoot to "<<r_lane<<endl;
-                r_lane_flag++;
-                if(r_lane_flag >= lane_number/2){
-                    r_lane_flag = 0;
-                    #ifndef ROGUETMCLEANER
-                    cleaner_flag = 1;
-                    int j;
-                    for(j = 0; j < lane_number; j++){
-                        if(Gallery->Get(j) == white){
-                            break;
-                        }
-                    }
-                    if(j == lane_number){
-                        print_flag = 1;
-                        while(print_flag);
-                        round--;
-                        if(round == 0){
-                            exit(0);
-                        }
-                        sleep(1);
-                        Gallery->Clear();
-                        cleaner_flag = 0;
-                    }else{
-                        cleaner_flag = 0;
-                    }
-                    #endif
-                    #ifdef ROGUETMCLEANER
-                    cleaner_flag = 1;
-                    while(cleaner_flag);
-                    #endif
-                }
+                nretries++;
             }
-            
-        //cout<<"This the "<<nretries<<"th try."<<endl;
+        }else{
+            r_lane_flag++;
+            if(r_lane_flag >= lane_number/2){
+                r_lane_flag = 0;
+                #ifndef ROGUETMCLEANER
+                cleaner_flag = 1;
+                int j;
+                for(j = 0; j < lane_number; j++){
+                    if(Gallery->Get(j) == white){
+                        break;
+                    }
+                }
+                if(j == lane_number){
+                    print_flag = 1;
+                    while(print_flag);
+                    round--;
+                    if(round == 0){
+                        exit(0);
+                    }
+                    sleep(1);
+                    Gallery->Clear();
+                    cleaner_flag = 0;
+                }else{
+                    cleaner_flag = 0;
+                }
+                #endif
+                #ifdef ROGUETMCLEANER
+                cleaner_flag = 1;
+                while(cleaner_flag);
+                #endif
+            }
+        }
+        
     }
 }
 
@@ -149,7 +144,7 @@ void Printer()
      */
     while(1){
         if(print_flag == 1){
-            cout<<"Printer in working"<<endl;
+            cout<<"Printer in working "<<round<<endl;
             Gallery->Print();
             print_flag = 0;
         }
