@@ -895,8 +895,8 @@ void Printer(int rate)
                     blue_sum++;
                 }
             }
-            cout<<"Red shoot rate: "<<red_sum*1000000/time_passed<<endl;
-            cout<<"Blue shoot rate: "<<blue_sum*1000000/time_passed<<endl;
+            cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
+            cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
             red_sum = 0;
             blue_sum = 0;
             Gallery->Print();
