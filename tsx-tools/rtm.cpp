@@ -97,7 +97,7 @@ void ShooterAction(int rate,Color PlayerColor){
                 }
             }
             
-        cout<<"This the "<<nretries<<"th try."<<endl;
+        //cout<<"This the "<<nretries<<"th try."<<endl;
     }
 }
 
