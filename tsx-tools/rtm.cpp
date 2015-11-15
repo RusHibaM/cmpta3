@@ -18,6 +18,9 @@ int blue_rate;
 int round;
 int lane_number;
 
+int abort = 0;
+int succ = 0;
+
 int print_flag = 0;  /* flag used to control the printer */
 int cleaner_flag = 0;
 int shooting_flag = 0;
@@ -26,6 +29,7 @@ struct timeval start;
 struct timeval new_start;
 
 void ShooterAction(int rate,Color PlayerColor){
+    int suc = 0;
     int nretries=0;
     int status;
     
@@ -56,6 +60,7 @@ void ShooterAction(int rate,Color PlayerColor){
         /* Shoot the lane if the lane is white*/
         if(this_color == white&&!cleaner_flag){
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                suc++;
                 shooting_flag = 1;
                 Gallery->Set(r_lane,PlayerColor);
                 shooting_flag = 0;
@@ -75,6 +80,9 @@ void ShooterAction(int rate,Color PlayerColor){
                 }
                 if(j == lane_number){
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                        suc++;
+                        succ = suc;
+                        abort = nretries;
                         print_flag = 1;
                         _xend ();
                     }else{
@@ -113,6 +121,7 @@ void ShooterAction(int rate,Color PlayerColor){
         /* Shoot the lane if the lane is white*/
         if(this_color == white&&this_color_2 == white&&!cleaner_flag){
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                suc++;
                 shooting_flag = 1;
                 Gallery->Set(r_lane,PlayerColor);
                 Gallery->Set(r_lane_2,PlayerColor);
@@ -133,6 +142,9 @@ void ShooterAction(int rate,Color PlayerColor){
                 }
                 if(j == lane_number){
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
+                        suc++;
+                        succ = suc;
+                        abort = nretries;
                         print_flag = 1;
                         _xend ();
                     }else{
@@ -142,6 +154,7 @@ void ShooterAction(int rate,Color PlayerColor){
                 
             }
         }
+        
     }
     #endif
 }
@@ -205,6 +218,7 @@ void Printer()
             cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
             cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
             cout<<"Total time used: "<<time_passed<<endl;
+            cout<<"Abort rate: "<<abort*1.0/(succ + abort)<<endl;
             total_time_passed += time_passed;
             red_sum = 0;
             blue_sum = 0;
