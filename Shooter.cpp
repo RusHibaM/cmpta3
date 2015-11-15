@@ -293,64 +293,68 @@ void ShooterAction(int rate,Color PlayerColor)
         }
         #endif
         #ifdef CHECKFIRST
-        /* Try acquire the lock */
-        if(!coarseLock.check_lock()&&!cleaner_flag){
-            /* Double check to gaurantee the synchronization */
-            if (coarseLock.set_lock()&&!cleaner_flag) {
-                /* Try get a lane */
-                /* r_lane is the lane */
-                r_lane = rand()%lane_number;
-                
-                /* Check if the lane is white */
-                Color this_color = Gallery->Get(r_lane);
-                
-                /* Shoot the lane if the lane is white*/
-                if(this_color == white&&!cleaner_flag){
-                    Gallery->Set(r_lane,PlayerColor);
-                    successful_shot++;
-                    coarseLock.release_lock();
-                }else{
-                    r_lane_flag++;
-                    if(r_lane_flag >= lane_number/2){
-                        r_lane_flag = 0;
-                        #ifndef ROGUECOARSECLEANER
-                        cleaner_flag = 1;
-                        int j;
-                        for(j = 0; j < lane_number; j++){
-                            if(Gallery->Get(j) == white){
-                                break;
-                            }
-                        }
-                        if(j == lane_number){
-                            print_flag = 1;
-                            while(print_flag);
-                            round--;
-                            if(round == 0){
-                                exit(0);
-                            }
-                            sleep(1);
-                            Gallery->Clear();
-                            coarseLock.release_lock();
-                            cleaner_flag = 0;
-                        }else{
-                            cleaner_flag = 0;
-                            coarseLock.release_lock();
-                        }
-                        #endif
-                        #ifdef ROGUECOARSECLEANER
-                        cleaner_flag = 1;
-                        while(cleaner_flag);
-                        coarseLock.release_lock();
-                        #endif
+        /* Try get a lane */
+        /* r_lane is the lane */
+        r_lane = rand()%lane_number;
+        
+        Color this_color = Gallery->Get(r_lane);
+        
+        /* Shoot the lane if the lane is white*/
+        if(this_color == white&&!cleaner_flag){
+            /* Try acquire the lock */
+            if(!fineLocks[r_lane].check_lock()&&!cleaner_flag){
+                /* Double check to gaurantee the synchronization */
+                if (fineLocks[r_lane].set_lock()&&!cleaner_flag) {
+                    /* Check if the lane is white */
+                    if(Gallery->Get(r_lane)==white){
+                        Gallery->Set(r_lane,PlayerColor);
+                        successful_shot++;
+                        fineLocks[r_lane].release_lock();
                     }
-                    coarseLock.release_lock();
-                }
-                
+                }else{
+                    continue;
+                    }
             }else{
                 continue;
             }
         }else{
-            continue;
+            r_lane_flag++;
+            if(r_lane_flag >= lane_number/2){
+                r_lane_flag = 0;
+                #ifndef ROGUEFINECLEANER
+                cleaner_flag = 1;
+                int j;
+                for(j = 0; j < lane_number; j++){
+                    if(Gallery->Get(j) == white){
+                        break;
+                    }
+                }
+                if(j == lane_number){
+                    print_flag = 1;
+                    while(print_flag);
+                    round--;
+                    if(round == 0){
+                        exit(0);
+                    }
+                    //sleep(1);
+                    Gallery->Clear();
+                    fineLocks[r_lane].release_lock();
+                    cleaner_flag = 0;
+                }else{
+                    cleaner_flag = 0;
+                    fineLocks[r_lane].release_lock();
+                }
+                #endif
+                #ifdef ROGUEFINECLEANER
+                cleaner_flag = 1;
+                while(cleaner_flag);
+                fineLocks[r_lane].release_lock();
+                #endif
+            }
+            fineLocks[r_lane].release_lock();
+        }
+        
+            
         }
         #endif
     }
