@@ -95,6 +95,7 @@ void ShooterAction(int rate,Color PlayerColor){
         }else{
             nretries++;
         }
+        cout<<"Status is "<<status<<endl;
         cout<<"This the "<<nretries<<"th try."<<endl;
     }
 }
