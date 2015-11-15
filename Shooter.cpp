@@ -97,6 +97,8 @@ void ShooterAction(int rate,Color PlayerColor)
         if(!coarseLock.check_lock()&&!cleaner_flag){
             /* Double check to gaurantee the synchronization */
             if (coarseLock.set_lock()&&!cleaner_flag) {
+                gettimeofday(&overhead_finish, 0);
+                overheads[overhead_index++] = (overhead_finish.tv_sec - overhead_start.tv_sec) * 1000000 + overhead_finish.tv_usec - overhead_start.tv_usec;
                 /* Try get a lane */
                 /* r_lane is the lane */
                 r_lane = rand()%lane_number;
@@ -107,8 +109,6 @@ void ShooterAction(int rate,Color PlayerColor)
                 /* Shoot the lane if the lane is white*/
                 if(this_color == white&&!cleaner_flag){
                     if(Gallery->Get(r_lane)==white){
-                        gettimeofday(&overhead_finish, 0);
-                        overheads[overhead_index++] = (overhead_finish.tv_sec - overhead_start.tv_sec) * 1000000 + overhead_finish.tv_usec - overhead_start.tv_usec;
                         Gallery->Set(r_lane,PlayerColor);
                         successful_shot++;
                         coarseLock.release_lock();
