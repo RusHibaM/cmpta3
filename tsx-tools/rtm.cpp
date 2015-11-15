@@ -73,9 +73,9 @@ void ShooterAction(int rate,Color PlayerColor){
                     cout<<"1234"<<endl;
                     if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                         print_flag = 1;
-                        sleep(1);
-                        Gallery->Clear();
-                        sleep(1);
+                        //sleep(1);
+                        //Gallery->Clear();
+                        //sleep(1);
                         _xend ();
                     }else{
                         nretries++;
