@@ -904,14 +904,15 @@ void Printer(int rate)
             }
             cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
             cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
-            red_sum = 0;
-            blue_sum = 0;
-            Gallery->Print();
             double total_overhead = 0;
             for(int i = 0; i < overhead_index; i++){
                 total_overhead += overheads[i];
             }
             cout<<"Total overheads: "<<total_overhead<<endl;
+            overhead_index = 0;
+            red_sum = 0;
+            blue_sum = 0;
+            Gallery->Print();
             gettimeofday(&new_start, 0);
             print_flag = 0;
         }
