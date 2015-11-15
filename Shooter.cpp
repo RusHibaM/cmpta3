@@ -879,9 +879,11 @@ void Printer(int rate)
      *
      */
     struct timeval finish;
+    double total_time_passed = 0;
     int time_passed;
     int red_sum = 0;
     int blue_sum = 0;
+    int round_num = round;
     while(1){
         if(print_flag == 1){
             gettimeofday(&finish, 0);
@@ -898,11 +900,16 @@ void Printer(int rate)
             cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
             cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
             cout<<"Total time used: "<<time_passed<<endl;
+            total_time_passed += time_passed;
             red_sum = 0;
             blue_sum = 0;
             Gallery->Print();
             gettimeofday(&new_start, 0);
             print_flag = 0;
+            if(round == 1){
+                cout<<"Time used: "<<total_time_passed<<endl;
+                cout<<"Average time used: "<<total_time_passed/round_num<<endl;
+            }
         }
     }
 }
