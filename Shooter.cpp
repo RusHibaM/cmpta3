@@ -879,7 +879,6 @@ void Printer(int rate)
             gettimeofday(&finish, 0);
             time_passed = (finish.tv_sec - new_start.tv_sec) * 1000000 + finish.tv_usec - new_start.tv_usec;
             cout<<"Printer in working"<<endl;
-            cout<<"Time used: "<<time_passed<<endl;
             for(int i = 0; i < lane_number; i++){
                 if(Gallery->Get(i) == red){
                     red_sum++;
@@ -888,8 +887,10 @@ void Printer(int rate)
                     blue_sum++;
                 }
             }
-            cout<<"Red shoot: "<<red_sum<<endl;
-            cout<<"Blue shoot:"<<blue_sum<<endl;
+            cout<<"Red shoot rate: "<<red_sum*1000000/time_passed<<endl;
+            cout<<"Blue shoot rate: "<<blue_sum*1000000/time_passed<<endl;
+            red_sum = 0;
+            blue_sum = 0;
             Gallery->Print();
             gettimeofday(&new_start, 0);
             print_flag = 0;
