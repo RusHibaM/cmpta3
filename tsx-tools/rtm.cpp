@@ -81,6 +81,7 @@ void ShooterAction(int rate,Color PlayerColor){
                     }
                     sleep(1);
                     Gallery->Clear();
+                    cout<<"Cleaner work "<<round<<endl;
                     cleaner_flag = 0;
                 }else{
                     cleaner_flag = 0;
