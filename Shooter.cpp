@@ -920,6 +920,7 @@ void Printer(int rate)
             }
             cout<<"Red shoot rate: "<<red_sum*1000000*1.0/time_passed<<endl;
             cout<<"Blue shoot rate: "<<blue_sum*1000000*1.0/time_passed<<endl;
+            cout<<"Time used to wait for lock"<<time_to_wait_lock<<endl;
             cout<<"Total time used: "<<time_passed<<endl;
             total_time_passed += time_passed;
             red_sum = 0;
