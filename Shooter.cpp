@@ -353,9 +353,6 @@ void ShooterAction(int rate,Color PlayerColor)
             }
             fineLocks[r_lane].release_lock();
         }
-        
-            
-        }
         #endif
     }
 #endif
