@@ -150,7 +150,7 @@ to get:
 use:
 	./Shooter -r [red shoot rate] -b [blue shoot rate] -n [round] -l [lane number]
 All the four parameters are required
-
+ 
 
 /* Output */
 

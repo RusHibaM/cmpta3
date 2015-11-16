@@ -39,7 +39,7 @@ int coarse_lock = 0;
 
 #ifdef ROGUEFINE
 
-My_fine_Locks fineLocks[20];
+My_fine_Locks fineLocks[40];
 
 int cleaner_flag = 0;/* flag used to control the cleaner */
 
@@ -57,7 +57,7 @@ int coarse_lock = 0;
 
 #ifdef ROGUEFINE2
 
-My_fine_Locks fineLocks[20];
+My_fine_Locks fineLocks[40];
 
 int cleaner_flag = 0;/* flag used to control the cleaner */
 
