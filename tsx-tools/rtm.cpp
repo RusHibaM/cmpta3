@@ -61,7 +61,6 @@ void ShooterAction(int rate,Color PlayerColor){
         if(this_color == white&&!cleaner_flag){
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                 suc++;
-                shooting_flag = 1;
                 Gallery->Set(r_lane,PlayerColor);
                 shooting_flag = 0;
                 successful_shot++;
@@ -124,7 +123,6 @@ void ShooterAction(int rate,Color PlayerColor){
         if(this_color == white&&this_color_2 == white&&!cleaner_flag){
             if ((status = _xbegin ()) == _XBEGIN_STARTED) {
                 suc++;
-                shooting_flag = 1;
                 Gallery->Set(r_lane,PlayerColor);
                 Gallery->Set(r_lane_2,PlayerColor);
                 shooting_flag = 0;
