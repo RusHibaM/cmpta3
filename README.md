@@ -1,12 +1,12 @@
-# cmpta3
+# CMPT A3
 
-##About
+## About
 
 This a course project for Embeded System Programming. 
 
 This will simulate a shooting practice in multi-thread mode.
 
-##How to run
+## How to run
 
 	use:
 		make Shooter_Coarse
