@@ -4,7 +4,7 @@
 
 This a course project for Embeded System Programming. 
 
-This will simulate a shooting practice in multi-thread mode.
+This project will simulate a shooting practice in multi-thread mode.
 
 ## How to run
 
